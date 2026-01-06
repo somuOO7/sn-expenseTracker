@@ -1,43 +1,32 @@
+import bottomTabItems from "@/constants/BottomTabItems";
 import Color from "@/constants/Color";
 import Icon from "@/constants/Icons";
 import Size from "@/constants/Size";
+import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { Image } from "expo-image";
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import Label from "./Label";
 
-const bottomTabItems = [
-  {
-    id: 0,
-    title: "Home",
-    selectedIcon: Icon.homeFill,
-    unselectedIcon: Icon.homeOutline,
-  },
-  {
-    id: 1,
-    title: "Reports",
-    selectedIcon: Icon.chartFill,
-    unselectedIcon: Icon.chartOutline,
-  },
-  {
-    id: 2,
-    title: "Cash+",
-    selectedIcon: Icon.walletFill,
-    unselectedIcon: Icon.walletOutline,
-  },
-  {
-    id: 3,
-    title: "Profile",
-    selectedIcon: Icon.profileFill,
-    unselectedIcon: Icon.profileOutline,
-  },
-];
-
-const BottomTab = () => {
+const BottomTab = ({ state, descriptors, navigation }: BottomTabBarProps) => {
   const renderTabs = () => {
     const tabs = [];
     for (let i = 0; i < bottomTabItems.length; i++) {
       const item = bottomTabItems[i];
+      const route = state.routes[i];
+      const isFocused = state.index === i;
+
+      const onPress = () => {
+        const event = navigation.emit({
+          type: "tabPress",
+          target: route.key,
+          canPreventDefault: true,
+        });
+
+        if (!isFocused && !event.defaultPrevented) {
+          navigation.navigate(route.name);
+        }
+      };
 
       // Empty spacer at the middle
       if (i === bottomTabItems.length / 2) {
@@ -45,18 +34,29 @@ const BottomTab = () => {
       }
 
       tabs.push(
-        <TouchableOpacity key={item.id} style={styles.buttons}>
+        <TouchableOpacity
+          key={item.id}
+          style={styles.buttons}
+          onPress={onPress}
+        >
           <Image
-            source={item.unselectedIcon}
-            style={[styles.icon, { tintColor: Color.gray }]}
+            source={isFocused ? item.selectedIcon : item.unselectedIcon}
+            style={[
+              styles.icon,
+              { tintColor: isFocused ? Color.primary : Color.gray },
+            ]}
             contentFit="contain"
           />
-          <Label style={{ color: Color.gray }}>{item.title}</Label>
+          <Label style={{ color: isFocused ? Color.primary : Color.gray }}>
+            {item.title}
+          </Label>
         </TouchableOpacity>
       );
     }
     return tabs;
   };
+
+  const isAddExpenseFocused = state.routes[state.index].name === "addExpense";
 
   return (
     <View style={styles.container}>
@@ -64,7 +64,15 @@ const BottomTab = () => {
 
       {/* Middle Icon */}
       <View style={styles.middleBump}>
-        <TouchableOpacity style={styles.middleIcon}>
+        <TouchableOpacity
+          style={[
+            styles.middleIcon,
+            {
+              backgroundColor: isAddExpenseFocused ? Color.primary : Color.gray,
+            },
+          ]}
+          onPress={() => navigation.navigate("addExpense")}
+        >
           <Image
             source={Icon.plus}
             style={[styles.icon, { tintColor: Color.white }]}
