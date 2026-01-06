@@ -1,15 +1,22 @@
+import Color from "@/constants/Color";
 import Size from "@/constants/Size";
-import { PropsWithChildren } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, ViewProps } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const SafeAreaContainer = (props: PropsWithChildren<{}>) => {
-  return <SafeAreaView style={styles.container}>{props.children}</SafeAreaView>;
+interface SafeAreaContainerProps extends ViewProps {}
+
+const SafeAreaContainer = (props: SafeAreaContainerProps) => {
+  return (
+    <SafeAreaView style={[styles.container, props.style]}>
+      {props.children}
+    </SafeAreaView>
+  );
 };
 
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: Size.padding,
+    backgroundColor: Color.accent,
   },
 });
 

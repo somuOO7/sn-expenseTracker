@@ -3,8 +3,10 @@ import SafeAreaContainer from "@/components/ui/SafeAreaContainer";
 
 export default function Index() {
   return (
-    <SafeAreaContainer>
-      <BottomTab />
-    </SafeAreaContainer>
+    <>
+      <SafeAreaContainer style={{ flex: 1 }}>
+        <BottomTab />
+      </SafeAreaContainer>
+    </>
   );
 }
