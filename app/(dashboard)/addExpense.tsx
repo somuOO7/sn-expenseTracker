@@ -32,7 +32,11 @@ const addExpense = () => {
           prefixIcon={
             <Image
               source={Icon.calendarOutline}
-              style={{ width: 16, height: 16, tintColor: Color.white }}
+              style={{
+                width: Size.fontSize,
+                height: Size.fontSize,
+                tintColor: Color.white,
+              }}
             />
           }
           placeholder="Today"
@@ -44,7 +48,11 @@ const addExpense = () => {
           prefixIcon={
             <Image
               source={Icon.noteOutline}
-              style={{ width: 16, height: 16, tintColor: Color.white }}
+              style={{
+                width: Size.fontSize,
+                height: Size.fontSize,
+                tintColor: Color.white,
+              }}
             />
           }
           placeholder="Add a note (optional)"

@@ -1,3 +1,4 @@
+import Size from "@/constants/Size";
 import React from "react";
 import { Text, TextProps } from "react-native";
 
@@ -35,7 +36,13 @@ const Label = (props: LabelProps) => {
   };
 
   return (
-    <Text {...props} style={[{ fontFamily: getFontFamily() }, props.style]}>
+    <Text
+      {...props}
+      style={[
+        { fontFamily: getFontFamily(), fontSize: Size.fontSize },
+        props.style,
+      ]}
+    >
       {props.children}
     </Text>
   );
