@@ -1,4 +1,4 @@
-import Size from "@/constants/Size";
+import { Size } from "@/constants";
 import React from "react";
 import { Text, TextProps } from "react-native";
 

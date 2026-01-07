@@ -1,5 +1,4 @@
-import Color from "@/constants/Color";
-import Size from "@/constants/Size";
+import { Color, Size } from "@/constants";
 import { StyleSheet, ViewProps } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 

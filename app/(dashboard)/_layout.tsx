@@ -1,4 +1,4 @@
-import BottomTab from "@/components/ui/BottomTab";
+import { BottomTab } from "@/components/ui";
 import { Tabs } from "expo-router";
 
 export default function DashboardLayout() {

@@ -1,11 +1,9 @@
-import SafeAreaContainer from "@/components/ui/SafeAreaContainer";
-import React from "react";
-import { Text } from "react-native";
+import { Label, SafeAreaContainer } from "@/components/ui";
 
 const cashPlus = () => {
   return (
     <SafeAreaContainer style={{ flex: 1 }}>
-      <Text>cashPlus</Text>
+      <Label>cashPlus</Label>
     </SafeAreaContainer>
   );
 };

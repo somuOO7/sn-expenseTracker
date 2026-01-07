@@ -1,11 +1,9 @@
-import SafeAreaContainer from "@/components/ui/SafeAreaContainer";
-import React from "react";
-import { Text } from "react-native";
+import { Label, SafeAreaContainer } from "@/components/ui";
 
 const profile = () => {
   return (
     <SafeAreaContainer style={{ flex: 1 }}>
-      <Text>profile</Text>
+      <Label>profile</Label>
     </SafeAreaContainer>
   );
 };

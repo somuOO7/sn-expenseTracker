@@ -1,14 +1,12 @@
-import Button from "@/components/ui/Button";
-import HorizontalSelector from "@/components/ui/HorizontalSelector";
-import Input from "@/components/ui/Input";
-import Label from "@/components/ui/Label";
-import SafeAreaContainer from "@/components/ui/SafeAreaContainer";
-import Color from "@/constants/Color";
-import CommonStyles from "@/constants/CommonStyles";
-import Icon from "@/constants/Icons";
-import Size from "@/constants/Size";
+import {
+  Button,
+  HorizontalSelector,
+  Input,
+  Label,
+  SafeAreaContainer,
+} from "@/components/ui";
+import { Color, CommonStyles, Icon, Size } from "@/constants";
 import { Image } from "expo-image";
-import React from "react";
 import { StyleSheet, View } from "react-native";
 
 const addExpense = () => {

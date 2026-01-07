@@ -1,6 +1,4 @@
-import Label from "@/components/ui/Label";
-import SafeAreaContainer from "@/components/ui/SafeAreaContainer";
-import React from "react";
+import { Label, SafeAreaContainer } from "@/components/ui";
 
 const index = () => {
   return (

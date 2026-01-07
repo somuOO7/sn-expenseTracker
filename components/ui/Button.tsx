@@ -1,6 +1,4 @@
-import Color from "@/constants/Color";
-import CommonStyles from "@/constants/CommonStyles";
-import React from "react";
+import { Color, CommonStyles } from "@/constants";
 import {
   StyleSheet,
   TouchableOpacity,

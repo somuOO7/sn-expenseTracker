@@ -1,7 +1,5 @@
-import Color from "@/constants/Color";
-import CommonStyles from "@/constants/CommonStyles";
-import Size from "@/constants/Size";
-import React, { useState } from "react";
+import { Color, CommonStyles, Size } from "@/constants";
+import { useState } from "react";
 import { StyleSheet, TextInput, View, ViewStyle } from "react-native";
 import Label from "./Label";
 

@@ -1,9 +1,5 @@
-import Color from "@/constants/Color";
-import CommonStyles from "@/constants/CommonStyles";
-import Icon from "@/constants/Icons";
-import Size from "@/constants/Size";
+import { Color, CommonStyles, Icon, Size } from "@/constants";
 import { Image } from "expo-image";
-import React from "react";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import Label from "./Label";
 
