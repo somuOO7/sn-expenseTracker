@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     height: 100,
     backgroundColor: Color.white,
-    borderRadius: 12,
+    borderRadius: Size.borderRadius,
   },
   largePrefixText: {
     color: Color.secondary,

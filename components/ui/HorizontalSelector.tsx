@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   itemContainer: {
     height: 72,
     width: 120,
-    borderRadius: 12,
+    borderRadius: Size.borderRadius,
     justifyContent: "center",
     alignItems: "center",
     padding: Size.padding,
