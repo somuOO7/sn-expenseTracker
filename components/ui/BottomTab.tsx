@@ -1,5 +1,6 @@
 import bottomTabItems from "@/constants/BottomTabItems";
 import Color from "@/constants/Color";
+import CommonStyles from "@/constants/CommonStyles";
 import Icon from "@/constants/Icons";
 import Size from "@/constants/Size";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
@@ -59,7 +60,7 @@ const BottomTab = ({ state, descriptors, navigation }: BottomTabBarProps) => {
   const isAddExpenseFocused = state.routes[state.index].name === "addExpense";
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, CommonStyles.shadowStyle]}>
       {renderTabs()}
 
       {/* Middle Icon */}
@@ -67,6 +68,7 @@ const BottomTab = ({ state, descriptors, navigation }: BottomTabBarProps) => {
         <TouchableOpacity
           style={[
             styles.middleIcon,
+            CommonStyles.shadowStyle,
             {
               backgroundColor: isAddExpenseFocused ? Color.primary : Color.gray,
             },
@@ -93,8 +95,6 @@ const styles = StyleSheet.create({
     right: Size.padding,
     height: 60,
     borderRadius: 30,
-
-    elevation: 4,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
@@ -117,7 +117,6 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     alignItems: "center",
     justifyContent: "center",
-    elevation: 4,
   },
   icon: {
     height: 28,
