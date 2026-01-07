@@ -1,3 +1,4 @@
+import HorizontalSelector from "@/components/ui/HorizontalSelector";
 import Input from "@/components/ui/Input";
 import Label from "@/components/ui/Label";
 import SafeAreaContainer from "@/components/ui/SafeAreaContainer";
@@ -11,14 +12,18 @@ import { StyleSheet, View } from "react-native";
 
 const addExpense = () => {
   return (
-    <SafeAreaContainer style={{ flex: 1 }}>
-      <Label variant="bold" style={CommonStyles.pageTitle}>
-        Add Expense
-      </Label>
-      <Label style={CommonStyles.subtitleText}>
-        Enter the amount and select category below.
-      </Label>
+    <SafeAreaContainer style={{ flex: 1, gap: Size.padding }}>
+      {/* Page title */}
+      <View>
+        <Label variant="bold" style={CommonStyles.pageTitle}>
+          Add Expense
+        </Label>
+        <Label style={CommonStyles.subtitleText}>
+          Enter the amount and select category below.
+        </Label>
+      </View>
 
+      {/* Inputs */}
       <Input
         title="Enter amount"
         prefixIcon="₹"
@@ -60,6 +65,43 @@ const addExpense = () => {
           style={{ flex: 2 }}
         />
       </View>
+
+      {/* Category selector */}
+      <HorizontalSelector
+        title="Select category"
+        data={[
+          {
+            id: 0,
+            title: "Sample Category",
+            icon: Icon.calendarOutline,
+            isSelected: true,
+          },
+          {
+            id: 1,
+            title: "Sample",
+            icon: Icon.homeOutline,
+            isSelected: false,
+          },
+          {
+            id: 2,
+            title: "Sample",
+            icon: Icon.homeOutline,
+            isSelected: false,
+          },
+          {
+            id: 3,
+            title: "Sample",
+            icon: Icon.homeOutline,
+            isSelected: false,
+          },
+          {
+            id: 4,
+            title: "Sample",
+            icon: Icon.homeOutline,
+            isSelected: false,
+          },
+        ]}
+      />
     </SafeAreaContainer>
   );
 };

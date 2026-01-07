@@ -17,7 +17,7 @@ const Input = (props: InputProps) => {
   const [amount, setAmount] = useState("");
 
   return (
-    <View style={[props.style, { marginVertical: Size.padding / 2 }]}>
+    <View style={props.style}>
       <Label variant="semibold" style={styles.title}>
         {props.title}
       </Label>

@@ -1,6 +1,7 @@
 const Size = {
-  padding: 14,
   fontSize: 16,
+  iconSize: 28,
+  padding: 14,
 };
 
-export default Size
+export default Size;
