@@ -1,3 +1,4 @@
+import Button from "@/components/ui/Button";
 import HorizontalSelector from "@/components/ui/HorizontalSelector";
 import Input from "@/components/ui/Input";
 import Label from "@/components/ui/Label";
@@ -102,6 +103,8 @@ const addExpense = () => {
           },
         ]}
       />
+
+      <Button title="Save" disabled />
     </SafeAreaContainer>
   );
 };
