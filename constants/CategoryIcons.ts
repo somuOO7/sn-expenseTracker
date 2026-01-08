@@ -9,7 +9,8 @@ const CategoryIcons = [
   { id: "catIcon_6", icon: Icon.gasStation },
   { id: "catIcon_7", icon: Icon.groceryBag },
   { id: "catIcon_8", icon: Icon.medical },
-  { id: "catIcon_9", icon: Icon.travel },
+  { id: "catIcon_9", icon: Icon.party },
+  { id: "catIcon_10", icon: Icon.travel },
 ];
 
 export default CategoryIcons;

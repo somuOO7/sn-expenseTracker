@@ -12,6 +12,7 @@ const Icon = {
   homeOutline: require("@/assets/icons/home-outline.svg"),
   medical: require("@/assets/icons/medical.svg"),
   noteOutline: require("@/assets/icons/note-outline.svg"),
+  party: require("@/assets/icons/party.svg"),
   plus: require("@/assets/icons/plus.svg"),
   profileFill: require("@/assets/icons/profile-fill.svg"),
   profileOutline: require("@/assets/icons/profile-outline.svg"),
