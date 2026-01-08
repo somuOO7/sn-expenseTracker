@@ -21,5 +21,16 @@ export default function RootLayout() {
       SplashScreen.hideAsync();
     }
   }, [fontLoaded, fontError]);
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen
+        name="modal"
+        options={{
+          presentation: 'transparentModal',
+          animation: 'fade',
+          headerShown: false,
+        }}
+      />
+    </Stack>
+  );
 }

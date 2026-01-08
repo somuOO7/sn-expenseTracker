@@ -1,5 +1,6 @@
-import { Color, CommonStyles, Icon, Size } from "@/constants";
+import { Color, CommonStyles, Icon, ModalCategory, Size } from "@/constants";
 import { Image } from "expo-image";
+import { useRouter } from "expo-router";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import Label from "./Label";
 
@@ -9,13 +10,23 @@ interface HorizontalSelectorProps {
 }
 
 const HorizontalSelector = (props: HorizontalSelectorProps) => {
+  const router = useRouter();
+
   return (
     <View style={{ gap: Size.padding / 2 }}>
       <View style={styles.titleContainer}>
         <Label variant="semibold" style={{ color: Color.secondary }}>
           {props.title}
         </Label>
-        <TouchableOpacity style={styles.addButton}>
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={() =>
+            router.push({
+              pathname: "/modal",
+              params: { type: ModalCategory.ADD_CATEGORY },
+            })
+          }
+        >
           <Label style={{ color: Color.white }}>Add</Label>
           <Image
             source={Icon.plus}

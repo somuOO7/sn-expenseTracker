@@ -102,7 +102,7 @@ const addExpense = () => {
         ]}
       />
 
-      <Button title="Save" disabled />
+      <Button title="Save" variant="primary" disabled />
     </SafeAreaContainer>
   );
 };

@@ -1,7 +1,18 @@
 import bottomTabItems from "./BottomTabItems";
+import CategoryIcons from "./CategoryIcons";
 import Color from "./Color";
 import CommonStyles from "./CommonStyles";
 import Icon from "./Icons";
+import ModalCategory from "./ModalCategory";
 import Size from "./Size";
 
-export { bottomTabItems, Color, CommonStyles, Icon, Size };
+export {
+  bottomTabItems,
+  CategoryIcons,
+  Color,
+  CommonStyles,
+  Icon,
+  ModalCategory,
+  Size,
+};
+

@@ -8,6 +8,7 @@ import Label from "./Label";
 
 interface ButtonProps extends TouchableOpacityProps {
   title: string;
+  variant: "primary" | "secondary";
 }
 
 const Button = (props: ButtonProps) => {
@@ -17,7 +18,13 @@ const Button = (props: ButtonProps) => {
       style={[
         styles.container,
         props.style,
-        { backgroundColor: props.disabled ? Color.gray : Color.primary },
+        {
+          backgroundColor: props.disabled
+            ? Color.gray
+            : props.variant === "primary"
+            ? Color.primary
+            : Color.secondary,
+        },
         CommonStyles.shadowStyle,
       ]}
     >
