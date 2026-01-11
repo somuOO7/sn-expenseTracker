@@ -16,6 +16,8 @@ const Icon = {
   plus: require("@/assets/icons/plus.svg"),
   profileFill: require("@/assets/icons/profile-fill.svg"),
   profileOutline: require("@/assets/icons/profile-outline.svg"),
+  stockDown: require("@/assets/icons/stock-down.svg"),
+  stockUp: require("@/assets/icons/stock-up.svg"),
   travel: require("@/assets/icons/travel.svg"),
   walletFill: require("@/assets/icons/wallet-fill.svg"),
   walletOutline: require("@/assets/icons/wallet-outline.svg"),
