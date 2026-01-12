@@ -57,7 +57,6 @@ const Input = (props: InputProps) => {
               props.value && {
                 width: Math.max(100, props.value.length * 20 + 30),
               },
-            { flex: 1 },
           ]}
         />
       </View>
@@ -98,7 +97,7 @@ const styles = StyleSheet.create({
     gap: Size.padding / 2,
   },
   smallPrefixText: { color: Color.white },
-  smallInput: { color: Color.white, fontSize: Size.fontSize },
+  smallInput: { color: Color.white, fontSize: Size.fontSize, flex: 1 },
 });
 
 export default Input;

@@ -7,9 +7,12 @@ import {
 } from "@/components/ui";
 import { Color, CommonStyles, Icon, Size } from "@/constants";
 import { Image } from "expo-image";
+import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 
 const addExpense = () => {
+  const [formData, setFormData] = useState({ amount: "" });
+
   return (
     <SafeAreaContainer style={{ flex: 1, gap: Size.padding }}>
       {/* Page title */}
@@ -28,6 +31,8 @@ const addExpense = () => {
         prefixIcon="₹"
         placeholder="0.00"
         variant="large"
+        value={formData.amount}
+        onChangeText={(text) => setFormData({ ...formData, amount: text })}
       />
 
       <View style={styles.inputGroup}>
