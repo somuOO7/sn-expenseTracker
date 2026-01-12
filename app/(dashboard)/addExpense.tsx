@@ -13,9 +13,16 @@ import { useCallback, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
 const addExpense = () => {
-  const { addCategory, getCategory } = useCategory;
+  const { getCategory } = useCategory;
   const [formData, setFormData] = useState({ amount: "" });
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<
+    Array<{
+      id: string;
+      isSelected: boolean;
+      title: string;
+      icon: keyof typeof Icon;
+    }>
+  >([]);
 
   useFocusEffect(
     useCallback(() => {
@@ -34,6 +41,14 @@ const addExpense = () => {
       fetchCategory();
     }, [])
   );
+
+  const setSelectedCategory = (id: string) => {
+    const updatedCategories = categories.map((category) => ({
+      ...category,
+      isSelected: category.id === id,
+    }));
+    setCategories(updatedCategories);
+  };
 
   return (
     <SafeAreaContainer style={{ flex: 1, gap: Size.padding }}>
@@ -93,7 +108,11 @@ const addExpense = () => {
       </View>
 
       {/* Category selector */}
-      <HorizontalSelector title="Select category" data={categories} />
+      <HorizontalSelector
+        title="Select category"
+        data={categories}
+        setSelected={setSelectedCategory}
+      />
 
       <Button title="Save" variant="primary" disabled />
     </SafeAreaContainer>

@@ -6,11 +6,12 @@ import Label from "./Label";
 interface HorizontalSelectorProps {
   title: string;
   data: Array<{
-    id: number;
+    id: string;
     title: string;
     icon: keyof typeof Icon;
     isSelected: boolean;
   }>;
+  setSelected: (id: string) => void;
 }
 
 const HorizontalSelector = (props: HorizontalSelectorProps) => {
@@ -51,6 +52,7 @@ const HorizontalSelector = (props: HorizontalSelectorProps) => {
           {props.data.map((item) => (
             <TouchableOpacity
               key={item.id}
+              onPress={() => props.setSelected(item.id)}
               style={[
                 styles.itemContainer,
                 CommonStyles.shadowStyle,
