@@ -1,9 +1,11 @@
 import { Button, Input, Label, SafeAreaContainer } from "@/components/ui";
+import { auth } from "@/config/firebaseConfig";
 import { Color, CommonStyles, Icon, SecureStoreKey, Size } from "@/constants";
 import { useAuthStore } from "@/store";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
@@ -24,9 +26,23 @@ const login = () => {
   }, [formData]);
 
   const handleLogin = async () => {
-    // Handle login logic here
-    await SecureStore.setItemAsync(SecureStoreKey.userId, formData.email);
-    setIsAuthenticated(true);
+    signInWithEmailAndPassword(auth, formData.email, formData.password)
+      .then(async (userCredential) => {
+        console.log("User signed in:", JSON.stringify(userCredential));
+
+        await SecureStore.setItemAsync(
+          SecureStoreKey.userId,
+          userCredential.user.uid
+        );
+        setIsAuthenticated(true);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+
+        console.log("Error Code: ", errorCode);
+        console.log("Error Message: ", errorMessage);
+      });
   };
 
   return (
