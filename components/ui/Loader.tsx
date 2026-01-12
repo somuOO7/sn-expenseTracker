@@ -20,5 +20,6 @@ const style = StyleSheet.create({
     right: 0,
     justifyContent: "center",
     alignItems: "center",
+    zIndex: 9999,
   },
 });

@@ -1,5 +1,7 @@
 import { AddCategory } from "@/components/modals";
+import { Loader } from "@/components/ui";
 import { Color, ModalCategory, Size } from "@/constants";
+import { useUiStore } from "@/store";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, TouchableWithoutFeedback, View } from "react-native";
@@ -7,6 +9,7 @@ import { StyleSheet, TouchableWithoutFeedback, View } from "react-native";
 const modal = () => {
   const router = useRouter();
   const { type } = useLocalSearchParams<{ type: ModalCategory }>();
+  const { showLoader } = useUiStore();
 
   return (
     <>
@@ -16,6 +19,7 @@ const modal = () => {
       <View style={styles.container}>
         {type === ModalCategory.ADD_CATEGORY && <AddCategory />}
       </View>
+      {showLoader && <Loader />}
     </>
   );
 };

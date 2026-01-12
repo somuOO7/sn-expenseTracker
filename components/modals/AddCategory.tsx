@@ -1,4 +1,5 @@
 import { CategoryIcons, Color, CommonStyles, Size } from "@/constants";
+import { useCategory } from "@/hooks";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
@@ -6,8 +7,22 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Button, Input, Label } from "../ui";
 
 const AddCategory = () => {
+  const { addCategory } = useCategory;
   const router = useRouter();
+  const [categoryName, setCategoryName] = useState("");
   const [selectedIcon, setSelectedIcon] = useState("catIcon_1");
+
+  const handleAddCategory = async () => {
+    try {
+      const selectedIconObj = CategoryIcons.find(
+        (icon) => icon.id === selectedIcon
+      );
+      await addCategory({ title: categoryName, icon: selectedIconObj?.icon });
+      router.back();
+    } catch (error) {
+      console.error("Error in handleAddCategory:", error);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -19,6 +34,8 @@ const AddCategory = () => {
         placeholder="Type your category name"
         title="Category name"
         variant="small"
+        value={categoryName}
+        onChangeText={setCategoryName}
       />
 
       <View>
@@ -45,7 +62,12 @@ const AddCategory = () => {
         </View>
       </View>
 
-      <Button title="Add" variant="primary" />
+      <Button
+        title="Add"
+        variant="primary"
+        disabled={!categoryName}
+        onPress={handleAddCategory}
+      />
       <Button
         title="Cancel"
         variant="secondary"
