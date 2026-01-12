@@ -1,6 +1,7 @@
 import { db } from "@/config/firebaseConfig";
 import { Icon, SecureStoreKey } from "@/constants";
 import FirestoreCollectionName from "@/constants/FirestoreCollectionName";
+import { useUiStore } from "@/store";
 import * as Crypto from "expo-crypto";
 import * as SecureStore from "expo-secure-store";
 import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
@@ -19,6 +20,7 @@ interface Category {
 
 const addCategory = async (category: Category) => {
   try {
+    useUiStore.getState().setShowLoader(true);
     const userId = await SecureStore.getItemAsync(SecureStoreKey.userId);
     if (userId) {
       const docRef = doc(db, FirestoreCollectionName.categories, userId);
@@ -39,11 +41,14 @@ const addCategory = async (category: Category) => {
     }
   } catch (error) {
     console.error("Error adding category:", error);
+  } finally {
+    useUiStore.getState().setShowLoader(false);
   }
 };
 
 const getCategory = async () => {
   try {
+    useUiStore.getState().setShowLoader(true);
     const userId = await SecureStore.getItemAsync(SecureStoreKey.userId);
     if (userId) {
       const docRef = doc(db, FirestoreCollectionName.categories, userId);
@@ -52,6 +57,8 @@ const getCategory = async () => {
     }
   } catch (error) {
     console.error("Error getting category:", error);
+  } finally {
+    useUiStore.getState().setShowLoader(false);
   }
 };
 

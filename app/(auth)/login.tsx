@@ -1,7 +1,7 @@
 import { Button, Input, Label, SafeAreaContainer } from "@/components/ui";
 import { auth } from "@/config/firebaseConfig";
 import { Color, CommonStyles, Icon, SecureStoreKey, Size } from "@/constants";
-import { useAuthStore } from "@/store";
+import { useAuthStore, useUiStore } from "@/store";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
@@ -10,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 const login = () => {
+  const { setShowLoader } = useUiStore();
   const router = useRouter();
 
   const { setIsAuthenticated } = useAuthStore();
@@ -26,6 +27,7 @@ const login = () => {
   }, [formData]);
 
   const handleLogin = async () => {
+    setShowLoader(true);
     signInWithEmailAndPassword(auth, formData.email, formData.password)
       .then(async (userCredential) => {
         console.log("User signed in:", JSON.stringify(userCredential));
@@ -42,6 +44,9 @@ const login = () => {
 
         console.log("Error Code: ", errorCode);
         console.log("Error Message: ", errorMessage);
+      })
+      .finally(() => {
+        setShowLoader(false);
       });
   };
 

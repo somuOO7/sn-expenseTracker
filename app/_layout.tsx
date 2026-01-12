@@ -1,7 +1,7 @@
+import { Loader } from "@/components/ui";
 import { auth } from "@/config/firebaseConfig";
 import { SecureStoreKey } from "@/constants";
-import { useAuthStore } from "@/store";
-
+import { useAuthStore, useUiStore } from "@/store";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack, useRouter, useSegments } from "expo-router";
 import * as SecureStore from "expo-secure-store";
@@ -12,6 +12,8 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const { isAuthenticated, setIsAuthenticated } = useAuthStore();
+  const { showLoader } = useUiStore();
+
   const router = useRouter();
   const segments = useSegments();
 
@@ -66,15 +68,19 @@ export default function RootLayout() {
     }
   }, [fontLoaded, fontError, isAuthenticated]);
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen
-        name="modal"
-        options={{
-          presentation: "transparentModal",
-          animation: "fade",
-          headerShown: false,
-        }}
-      />
-    </Stack>
+    <>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen
+          name="modal"
+          options={{
+            presentation: "transparentModal",
+            animation: "fade",
+            headerShown: false,
+          }}
+        />
+      </Stack>
+
+      {showLoader && <Loader />}
+    </>
   );
 }
