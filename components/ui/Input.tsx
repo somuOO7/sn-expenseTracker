@@ -1,21 +1,24 @@
 import { Color, CommonStyles, Size } from "@/constants";
-import { useState } from "react";
-import { StyleSheet, TextInput, View, ViewStyle } from "react-native";
+import {
+  StyleSheet,
+  TextInput,
+  TextInputProps,
+  View,
+  ViewStyle,
+} from "react-native";
 import Label from "./Label";
 
-interface InputProps {
+interface InputProps extends TextInputProps {
   title: string;
   placeholder: string;
   prefixIcon?: React.ReactNode | string;
   variant: "large" | "small";
-  style?: ViewStyle;
+  containerStyle?: ViewStyle;
 }
 
 const Input = (props: InputProps) => {
-  const [amount, setAmount] = useState("");
-
   return (
-    <View style={props.style}>
+    <View style={props.containerStyle}>
       <Label variant="semibold" style={styles.title}>
         {props.title}
       </Label>
@@ -43,18 +46,18 @@ const Input = (props: InputProps) => {
             props.prefixIcon
           ))}
         <TextInput
+          {...props}
           placeholder={props.placeholder}
-          value={amount}
-          onChangeText={setAmount}
-          keyboardType="numeric"
           placeholderTextColor={
             props.variant === "small" ? Color.white : Color.gray
           }
           style={[
             props.variant === "large" ? styles.largeInput : styles.smallInput,
-            props.variant === "large" && {
-              width: Math.max(100, amount.length * 20 + 30),
-            },
+            props.variant === "large" &&
+              props.value && {
+                width: Math.max(100, props.value.length * 20 + 30),
+              },
+            { flex: 1 },
           ]}
         />
       </View>
@@ -90,13 +93,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: Color.gray,
-    height: 26,
     borderRadius: 13,
-    paddingHorizontal: Size.padding / 2,
+    padding: Size.padding,
     gap: Size.padding / 2,
   },
   smallPrefixText: { color: Color.white },
-  smallInput: { color: Color.white },
+  smallInput: { color: Color.white, fontSize: Size.fontSize },
 });
 
 export default Input;

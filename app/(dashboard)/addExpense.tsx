@@ -45,7 +45,7 @@ const addExpense = () => {
           }
           placeholder="Today"
           variant="small"
-          style={{ flex: 1 }}
+          containerStyle={{ flex: 1 }}
         />
         <Input
           title="Add note"
@@ -61,7 +61,7 @@ const addExpense = () => {
           }
           placeholder="Add a note (optional)"
           variant="small"
-          style={{ flex: 2 }}
+          containerStyle={{ flex: 2 }}
         />
       </View>
 

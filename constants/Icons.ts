@@ -10,6 +10,8 @@ const Icon = {
   groceryBag: require("@/assets/icons/grocery-bag.svg"),
   homeFill: require("@/assets/icons/home-fill.svg"),
   homeOutline: require("@/assets/icons/home-outline.svg"),
+  lock: require("@/assets/icons/lock.svg"),
+  mail: require("@/assets/icons/mail.svg"),
   medical: require("@/assets/icons/medical.svg"),
   noteOutline: require("@/assets/icons/note-outline.svg"),
   party: require("@/assets/icons/party.svg"),

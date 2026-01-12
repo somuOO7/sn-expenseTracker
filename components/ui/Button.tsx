@@ -1,4 +1,4 @@
-import { Color, CommonStyles } from "@/constants";
+import { Color, CommonStyles, Size } from "@/constants";
 import {
   StyleSheet,
   TouchableOpacity,
@@ -36,7 +36,12 @@ const Button = (props: ButtonProps) => {
 };
 
 const styles = StyleSheet.create({
-  container: { height: 48, justifyContent: "center", borderRadius: 24 },
+  container: {
+    height: 48,
+    justifyContent: "center",
+    borderRadius: 24,
+    marginVertical: Size.padding,
+  },
   title: {
     color: Color.white,
     textAlign: "center",
