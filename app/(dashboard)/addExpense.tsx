@@ -6,12 +6,34 @@ import {
   SafeAreaContainer,
 } from "@/components/ui";
 import { Color, CommonStyles, Icon, Size } from "@/constants";
+import { useCategory } from "@/hooks";
 import { Image } from "expo-image";
-import { useState } from "react";
+import { useFocusEffect } from "expo-router";
+import { useCallback, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
 const addExpense = () => {
+  const { addCategory, getCategory } = useCategory;
   const [formData, setFormData] = useState({ amount: "" });
+  const [categories, setCategories] = useState([]);
+
+  useFocusEffect(
+    useCallback(() => {
+      const fetchCategory = async () => {
+        const result = await getCategory();
+
+        const updatedCategories = result.map(
+          (category: any, index: number) => ({
+            ...category,
+            isSelected: index === 0,
+          })
+        );
+
+        setCategories(updatedCategories);
+      };
+      fetchCategory();
+    }, [])
+  );
 
   return (
     <SafeAreaContainer style={{ flex: 1, gap: Size.padding }}>
@@ -71,41 +93,7 @@ const addExpense = () => {
       </View>
 
       {/* Category selector */}
-      <HorizontalSelector
-        title="Select category"
-        data={[
-          {
-            id: 0,
-            title: "Sample Category",
-            icon: Icon.calendarOutline,
-            isSelected: true,
-          },
-          {
-            id: 1,
-            title: "Sample",
-            icon: Icon.homeOutline,
-            isSelected: false,
-          },
-          {
-            id: 2,
-            title: "Sample",
-            icon: Icon.homeOutline,
-            isSelected: false,
-          },
-          {
-            id: 3,
-            title: "Sample",
-            icon: Icon.homeOutline,
-            isSelected: false,
-          },
-          {
-            id: 4,
-            title: "Sample",
-            icon: Icon.homeOutline,
-            isSelected: false,
-          },
-        ]}
-      />
+      <HorizontalSelector title="Select category" data={categories} />
 
       <Button title="Save" variant="primary" disabled />
     </SafeAreaContainer>

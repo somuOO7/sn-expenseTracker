@@ -1,9 +1,11 @@
+import { auth } from "@/config/firebaseConfig";
 import { SecureStoreKey } from "@/constants";
 import { useAuthStore } from "@/store";
 
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack, useRouter, useSegments } from "expo-router";
 import * as SecureStore from "expo-secure-store";
+import { onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
 
 SplashScreen.preventAutoHideAsync();
@@ -26,16 +28,20 @@ export default function RootLayout() {
 
   // Check for userId in secure store on mount
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const userId = await SecureStore.getItemAsync(SecureStoreKey.userId);
-        setIsAuthenticated(!!userId);
-      } catch (error) {
-        console.error("Error checking auth:", error);
+    // Listen to Firebase auth state changes
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        // User is authenticated
+        await SecureStore.setItemAsync(SecureStoreKey.userId, user.uid);
+        setIsAuthenticated(true);
+      } else {
+        // User is not authenticated
+        await SecureStore.deleteItemAsync(SecureStoreKey.userId);
         setIsAuthenticated(false);
       }
-    };
-    checkAuth();
+    });
+
+    return () => unsubscribe();
   }, []);
 
   // Handle navigation based on auth state

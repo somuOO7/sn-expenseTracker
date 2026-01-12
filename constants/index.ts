@@ -2,6 +2,7 @@ import bottomTabItems from "./BottomTabItems";
 import CategoryIcons from "./CategoryIcons";
 import Color from "./Color";
 import CommonStyles from "./CommonStyles";
+import FireStoreCollectionName from "./FirestoreCollectionName";
 import Icon from "./Icons";
 import ModalCategory from "./ModalCategory";
 import SecureStoreKey from "./SecureStoreKey";
@@ -12,6 +13,7 @@ export {
   CategoryIcons,
   Color,
   CommonStyles,
+  FireStoreCollectionName,
   Icon,
   ModalCategory,
   SecureStoreKey,

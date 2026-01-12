@@ -3,10 +3,14 @@ import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import Label from "./Label";
-
 interface HorizontalSelectorProps {
   title: string;
-  data: Array<{ id: number; title: string; icon: string; isSelected: boolean }>;
+  data: Array<{
+    id: number;
+    title: string;
+    icon: keyof typeof Icon;
+    isSelected: boolean;
+  }>;
 }
 
 const HorizontalSelector = (props: HorizontalSelectorProps) => {
@@ -58,7 +62,7 @@ const HorizontalSelector = (props: HorizontalSelectorProps) => {
               ]}
             >
               <Image
-                source={item.icon}
+                source={Icon[item.icon]}
                 style={[
                   styles.icon,
                   {
