@@ -6,7 +6,7 @@ import {
   SafeAreaContainer,
 } from "@/components/ui";
 import { Color, CommonStyles, Icon, Size } from "@/constants";
-import { useCategory } from "@/hooks";
+import { useCategory, useExpense } from "@/hooks";
 import { Image } from "expo-image";
 import { useFocusEffect } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
@@ -14,11 +14,13 @@ import { StyleSheet, View } from "react-native";
 
 const addExpense = () => {
   const { getCategory } = useCategory;
+  const { addExpense } = useExpense;
+
   const [formData, setFormData] = useState({
     amount: "",
     categoryId: "",
     note: "",
-    date: new Date().toISOString(),
+    date: new Date().toLocaleDateString(),
   });
   const [categories, setCategories] = useState<
     Array<{
@@ -65,6 +67,15 @@ const addExpense = () => {
       isSelected: category.id === id,
     }));
     setCategories(updatedCategories);
+  };
+
+  const handleAddExpenseButtonClick = async () => {
+    try {
+      await addExpense({ ...formData });
+      setFormData({ ...formData, amount: "", note: "" });
+    } catch (error) {
+      console.error("Error adding expense:", error);
+    }
   };
 
   return (
@@ -138,6 +149,7 @@ const addExpense = () => {
         title="Save"
         variant="primary"
         disabled={!formData.amount || !formData.categoryId || !formData.date}
+        onPress={handleAddExpenseButtonClick}
       />
     </SafeAreaContainer>
   );
