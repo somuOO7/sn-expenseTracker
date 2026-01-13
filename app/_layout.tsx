@@ -1,3 +1,4 @@
+import { Toast } from "@/components/alert";
 import { Loader } from "@/components/ui";
 import { auth } from "@/config/firebaseConfig";
 import { SecureStoreKey } from "@/constants";
@@ -12,7 +13,7 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const { isAuthenticated, setIsAuthenticated } = useAuthStore();
-  const { showLoader } = useUiStore();
+  const { showLoader, toast } = useUiStore();
 
   const router = useRouter();
   const segments = useSegments();
@@ -81,6 +82,7 @@ export default function RootLayout() {
       </Stack>
 
       {showLoader && <Loader />}
+      {toast?.visible && <Toast />}
     </>
   );
 }

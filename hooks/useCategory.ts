@@ -38,9 +38,21 @@ const addCategory = async (category: Category) => {
         // Create new document with the category
         await setDoc(docRef, { list: [newCategory] });
       }
+
+      useUiStore
+        .getState()
+        .showToast({
+          message: "Category added successfully",
+          visible: true,
+          variant: "success",
+        });
     }
-  } catch (error) {
-    console.error("Error adding category:", error);
+  } catch (error: any) {
+    useUiStore.getState().showToast({
+      message: error.code || "",
+      visible: true,
+      variant: "failure",
+    });
   } finally {
     useUiStore.getState().setShowLoader(false);
   }
@@ -55,8 +67,12 @@ const getCategory = async () => {
       const docSnap = await getDoc(docRef);
       return docSnap.exists() ? docSnap.data().list : [];
     }
-  } catch (error) {
-    console.error("Error getting category:", error);
+  } catch (error: any) {
+    useUiStore.getState().showToast({
+      message: error.code || "",
+      visible: true,
+      variant: "failure",
+    });
   } finally {
     useUiStore.getState().setShowLoader(false);
   }

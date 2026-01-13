@@ -10,7 +10,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 const login = () => {
-  const { setShowLoader } = useUiStore();
+  const { setShowLoader, showToast } = useUiStore();
   const router = useRouter();
 
   const { setIsAuthenticated } = useAuthStore();
@@ -39,11 +39,7 @@ const login = () => {
         setIsAuthenticated(true);
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-
-        console.log("Error Code: ", errorCode);
-        console.log("Error Message: ", errorMessage);
+        showToast({ visible: true, message: error.code, variant: "failure" });
       })
       .finally(() => {
         setShowLoader(false);
