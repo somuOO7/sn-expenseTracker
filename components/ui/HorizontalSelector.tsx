@@ -12,7 +12,6 @@ interface HorizontalSelectorProps {
     isSelected: boolean;
   }>;
   setSelected: (id: string) => void;
-  categoryType: "expense" | "invest";
 }
 
 const HorizontalSelector = (props: HorizontalSelectorProps) => {
@@ -29,10 +28,7 @@ const HorizontalSelector = (props: HorizontalSelectorProps) => {
           onPress={() =>
             router.push({
               pathname: "/modal",
-              params: {
-                type: ModalCategory.ADD_CATEGORY,
-                categoryType: props.categoryType,
-              },
+              params: { type: ModalCategory.ADD_CATEGORY },
             })
           }
         >

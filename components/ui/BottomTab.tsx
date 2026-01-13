@@ -88,7 +88,7 @@ const BottomTab = ({ state, navigation }: BottomTabBarProps) => {
             <TouchableOpacity
               style={[styles.optionIcon, { left: -2 * Size.padding }]}
               onPress={() => {
-                navigation.navigate("addExpense", { type: "expense" });
+                navigation.navigate("addExpense");
                 setIsPlusClicked(false);
               }}
             >

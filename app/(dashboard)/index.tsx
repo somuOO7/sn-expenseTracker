@@ -19,7 +19,7 @@ const index = () => {
       const callInitialAPIs = async () => {
         const expensesData = await getExpenses();
         setExpenses(expensesData);
-        await getCategory("expense");
+        await getCategory();
       };
       callInitialAPIs();
     }, [])
