@@ -59,10 +59,6 @@ const addExpense = () => {
     });
   }, [categories]);
 
-  useEffect(() => {
-    console.log("Form Data Updated:", formData);
-  }, [formData]);
-
   const setSelectedCategory = (id: string) => {
     const updatedCategories = categories.map((category) => ({
       ...category,
