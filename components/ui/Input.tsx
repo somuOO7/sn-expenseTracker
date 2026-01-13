@@ -57,6 +57,7 @@ const Input = (props: InputProps) => {
               props.value && {
                 width: Math.max(100, props.value.length * 20 + 30),
               },
+            { fontFamily: props.variant === "large" ? "Bold" : "Regular" },
           ]}
         />
       </View>

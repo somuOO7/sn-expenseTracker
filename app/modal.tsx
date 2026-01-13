@@ -1,4 +1,4 @@
-import { AddCategory } from "@/components/modals";
+import { AddCashPlus, AddCategory } from "@/components/modals";
 import { Loader } from "@/components/ui";
 import { Color, ModalCategory, Size } from "@/constants";
 import { useUiStore } from "@/store";
@@ -18,6 +18,7 @@ const modal = () => {
       </TouchableWithoutFeedback>
       <View style={styles.container}>
         {type === ModalCategory.ADD_CATEGORY && <AddCategory />}
+        {type === ModalCategory.ADD_MUTUAL_FUND && <AddCashPlus type={type} />}
       </View>
       {showLoader && <Loader />}
     </>
