@@ -33,7 +33,7 @@ const index = () => {
         {/* Monthly statement section */}
         <View>
           <Label>Monthly statement</Label>
-          <ListTile title="Car" icon={Icon.car} />
+          <ListTile variant="analytic" title="Car" icon={Icon.car} />
         </View>
 
         {/* Recent expense section */}
@@ -50,8 +50,10 @@ const index = () => {
             expenses.map((expense) => (
               <ListTile
                 key={expense.id}
+                variant="detail"
                 title={expense.note}
                 categoryId={expense.categoryId}
+                detail={{ amount: expense.amount, date: expense.date }}
               />
             ))
           )}

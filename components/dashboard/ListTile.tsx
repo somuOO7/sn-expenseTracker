@@ -1,15 +1,19 @@
 import { Color, Size } from "@/constants";
 import Icon from "@/constants/Icons";
 import { useCategoryStore } from "@/store";
+import { formatAmount } from "@/utils/amountConverters";
+import { formatShortDate } from "@/utils/dateConverters";
 import { Image } from "expo-image";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Label } from "../ui";
 
 interface ListTileProps {
+  variant: "analytic" | "detail";
   title: string;
   icon?: keyof typeof Icon;
   categoryId?: string;
+  detail?: { amount: number; date: string };
 }
 
 const ListTile = (props: ListTileProps) => {
@@ -43,18 +47,31 @@ const ListTile = (props: ListTileProps) => {
 
       <Label style={styles.title}>{props.title}</Label>
 
-      <View style={styles.subtitleContianer}>
-        <Image
-          source={Icon.stockDown}
-          style={[styles.icon, { tintColor: Color.green }]}
-        />
-        <Label
-          variant="light"
-          style={{ fontSize: 12, textAlign: "right", color: Color.green }}
-        >
-          5% less than previous month
-        </Label>
-      </View>
+      {props.variant === "analytic" && (
+        <View style={styles.subtitleContianer}>
+          <Image
+            source={Icon.stockDown}
+            style={[styles.icon, { tintColor: Color.green }]}
+          />
+          <Label
+            variant="light"
+            style={{ fontSize: 12, textAlign: "right", color: Color.green }}
+          >
+            5% less than previous month
+          </Label>
+        </View>
+      )}
+
+      {props.variant === "detail" && (
+        <>
+          <View>
+            <Label>{formatShortDate(props.detail?.date || "")}</Label>
+          </View>
+          <View>
+            <Label>{formatAmount(props.detail?.amount || 0)}</Label>
+          </View>
+        </>
+      )}
     </View>
   );
 };
