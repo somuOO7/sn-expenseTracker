@@ -1,9 +1,27 @@
 import { ListTile, WalletCard } from "@/components/dashboard";
 import { Label, SafeAreaContainer } from "@/components/ui";
 import { Icon, Size } from "@/constants";
+import { useExpense } from "@/hooks";
+import { ExpenseType } from "@/types";
+import { useFocusEffect } from "expo-router";
+import { useCallback, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 const index = () => {
+  const { getExpenses } = useExpense;
+
+  const [expenses, setExpenses] = useState<ExpenseType[]>([]);
+
+  useFocusEffect(
+    useCallback(() => {
+      const fetchExpenses = async () => {
+        const expensesData = await getExpenses();
+        setExpenses(expensesData);
+      };
+      fetchExpenses();
+    }, [])
+  );
+
   return (
     <SafeAreaContainer style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={{ gap: Size.padding }}>
@@ -18,7 +36,9 @@ const index = () => {
         {/* Recent expense section */}
         <View>
           <Label>Recent expenses</Label>
-          <ListTile icon={Icon.calendarOutline} />
+          {expenses.map((expense) => (
+            <ListTile key={expense.id} icon={Icon.calendarOutline} />
+          ))}
         </View>
       </ScrollView>
     </SafeAreaContainer>

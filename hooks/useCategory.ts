@@ -2,6 +2,7 @@ import { db } from "@/config/firebaseConfig";
 import { Icon, SecureStoreKey } from "@/constants";
 import FirestoreCollectionName from "@/constants/FirestoreCollectionName";
 import { useUiStore } from "@/store";
+import { CategoryType } from "@/types";
 import * as Crypto from "expo-crypto";
 import * as SecureStore from "expo-secure-store";
 import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
@@ -13,12 +14,7 @@ const getIconName = (iconValue: keyof typeof Icon): string => {
   return entry ? entry[0] : "homeOutline";
 };
 
-interface Category {
-  title: string;
-  icon: keyof typeof Icon;
-}
-
-const addCategory = async (category: Category) => {
+const addCategory = async (category: CategoryType) => {
   try {
     useUiStore.getState().setShowLoader(true);
     const userId = await SecureStore.getItemAsync(SecureStoreKey.userId);
@@ -39,13 +35,11 @@ const addCategory = async (category: Category) => {
         await setDoc(docRef, { list: [newCategory] });
       }
 
-      useUiStore
-        .getState()
-        .showToast({
-          message: "Category added successfully",
-          visible: true,
-          variant: "success",
-        });
+      useUiStore.getState().showToast({
+        message: "Category added successfully",
+        visible: true,
+        variant: "success",
+      });
     }
   } catch (error: any) {
     useUiStore.getState().showToast({

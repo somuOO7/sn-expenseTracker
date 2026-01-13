@@ -7,6 +7,7 @@ import {
 } from "@/components/ui";
 import { Color, CommonStyles, Icon, Size } from "@/constants";
 import { useCategory, useExpense } from "@/hooks";
+import * as Crypto from "expo-crypto";
 import { Image } from "expo-image";
 import { useFocusEffect } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
@@ -71,7 +72,11 @@ const addExpense = () => {
 
   const handleAddExpenseButtonClick = async () => {
     try {
-      await addExpense({ ...formData });
+      await addExpense({
+        ...formData,
+        amount: parseFloat(formData.amount),
+        id: Crypto.randomUUID(),
+      });
       setFormData({ ...formData, amount: "", note: "" });
     } catch (error) {
       console.error("Error adding expense:", error);

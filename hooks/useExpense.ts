@@ -1,18 +1,11 @@
 import { db } from "@/config/firebaseConfig";
 import { FireStoreCollectionName, SecureStoreKey } from "@/constants";
 import { useUiStore } from "@/store";
-import * as Crypto from "expo-crypto";
+import { ExpenseType } from "@/types";
 import * as SecureStore from "expo-secure-store";
 import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
-interface ExpenseFormData {
-  amount: string;
-  categoryId: string;
-  note: string;
-  date: string;
-}
-
-const addExpense = async (expense: ExpenseFormData) => {
+const addExpense = async (expense: ExpenseType) => {
   try {
     useUiStore.getState().setShowLoader(true);
     const userId = await SecureStore.getItemAsync(SecureStoreKey.userId);
@@ -21,13 +14,10 @@ const addExpense = async (expense: ExpenseFormData) => {
       const docRef = doc(db, FireStoreCollectionName.expenses, userId);
       const docSnap = await getDoc(docRef);
 
-      const amount = parseFloat(expense.amount);
-      const newExpense = { ...expense, id: Crypto.randomUUID(), amount };
-
       if (docSnap.exists()) {
-        await updateDoc(docRef, { list: arrayUnion(newExpense) });
+        await updateDoc(docRef, { list: arrayUnion(expense) });
       } else {
-        await setDoc(docRef, { list: [newExpense] });
+        await setDoc(docRef, { list: [expense] });
       }
 
       useUiStore.getState().showToast({
@@ -36,15 +26,40 @@ const addExpense = async (expense: ExpenseFormData) => {
         variant: "success",
       });
     }
-  } catch (error) {
-    useUiStore.getState().showToast({
-      message: "Failed to add expense.",
-      visible: true,
-      variant: "failure",
-    });
+  } catch (error: any) {
+    useUiStore
+      .getState()
+      .showToast({ message: error.code, visible: true, variant: "failure" });
   } finally {
     useUiStore.getState().setShowLoader(false);
   }
 };
 
-export { addExpense };
+const getExpenses = async (): Promise<ExpenseType[]> => {
+  try {
+    useUiStore.getState().setShowLoader(true);
+    const userId = await SecureStore.getItemAsync(SecureStoreKey.userId);
+
+    if (userId) {
+      const docRef = doc(db, FireStoreCollectionName.expenses, userId);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        return docSnap.data().list as ExpenseType[];
+      } else {
+        return [];
+      }
+    } else {
+      return [];
+    }
+  } catch (error: any) {
+    useUiStore
+      .getState()
+      .showToast({ message: error.code, visible: true, variant: "failure" });
+    return [];
+  } finally {
+    useUiStore.getState().setShowLoader(false);
+  }
+};
+
+export { addExpense, getExpenses };
