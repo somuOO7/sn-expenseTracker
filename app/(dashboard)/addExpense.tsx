@@ -9,12 +9,17 @@ import { Color, CommonStyles, Icon, Size } from "@/constants";
 import { useCategory } from "@/hooks";
 import { Image } from "expo-image";
 import { useFocusEffect } from "expo-router";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
 const addExpense = () => {
   const { getCategory } = useCategory;
-  const [formData, setFormData] = useState({ amount: "" });
+  const [formData, setFormData] = useState({
+    amount: "",
+    categoryId: "",
+    note: "",
+    date: new Date().toISOString(),
+  });
   const [categories, setCategories] = useState<
     Array<{
       id: string;
@@ -42,6 +47,22 @@ const addExpense = () => {
     }, [])
   );
 
+  useEffect(() => {
+    // Update formData with selected categoryId
+    const selectedCategoryIndex = categories.findIndex(
+      (category) => category.isSelected
+    );
+    setFormData({
+      ...formData,
+      categoryId:
+        categories[selectedCategoryIndex]?.id || categories[0]?.id || "",
+    });
+  }, [categories]);
+
+  useEffect(() => {
+    console.log("Form Data Updated:", formData);
+  }, [formData]);
+
   const setSelectedCategory = (id: string) => {
     const updatedCategories = categories.map((category) => ({
       ...category,
@@ -68,6 +89,7 @@ const addExpense = () => {
         prefixIcon="₹"
         placeholder="0.00"
         variant="large"
+        keyboardType="numeric"
         value={formData.amount}
         onChangeText={(text) => setFormData({ ...formData, amount: text })}
       />
@@ -104,6 +126,8 @@ const addExpense = () => {
           placeholder="Add a note (optional)"
           variant="small"
           containerStyle={{ flex: 2 }}
+          value={formData.note}
+          onChangeText={(text) => setFormData({ ...formData, note: text })}
         />
       </View>
 
@@ -114,7 +138,11 @@ const addExpense = () => {
         setSelected={setSelectedCategory}
       />
 
-      <Button title="Save" variant="primary" disabled />
+      <Button
+        title="Save"
+        variant="primary"
+        disabled={!formData.amount || !formData.categoryId || !formData.date}
+      />
     </SafeAreaContainer>
   );
 };
