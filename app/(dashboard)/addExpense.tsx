@@ -10,11 +10,12 @@ import { useCategory, useExpense } from "@/hooks";
 import { useCategoryStore } from "@/store";
 import * as Crypto from "expo-crypto";
 import { Image } from "expo-image";
-import { useFocusEffect } from "expo-router";
+import { useFocusEffect, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
 const addExpense = () => {
+  const { type } = useLocalSearchParams<{ type: "invest" | "expense" }>();
   const { expenseCategories } = useCategoryStore();
   const { getCategory } = useCategory;
   const { addExpense } = useExpense;
@@ -95,7 +96,7 @@ const addExpense = () => {
       {/* Page title */}
       <View>
         <Label variant="bold" style={CommonStyles.pageTitle}>
-          Add Expense
+          {type === "invest" ? "Add Investment" : "Add Expense"}
         </Label>
         <Label style={CommonStyles.subtitleText}>
           Enter the amount and select category below.
