@@ -37,7 +37,7 @@ const index = () => {
         </View>
 
         {/* Recent expense section */}
-        <View>
+        <View style={{ gap: Size.padding / 2 }}>
           <Label>Recent expenses</Label>
           {expenses.length === 0 ? (
             <View style={styles.noDataContainer}>

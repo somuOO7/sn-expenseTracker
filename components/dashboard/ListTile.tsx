@@ -38,7 +38,7 @@ const ListTile = (props: ListTileProps) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.iconContainer}>
+      <View style={styles.primaryContainer}>
         <Image
           source={getIconSource()}
           style={[styles.icon, { tintColor: Color.primary }]}
@@ -64,11 +64,15 @@ const ListTile = (props: ListTileProps) => {
 
       {props.variant === "detail" && (
         <>
-          <View>
-            <Label>{formatShortDate(props.detail?.date || "")}</Label>
+          <View style={styles.detailsDate}>
+            <Label style={{ fontSize: 12, color: Color.white }}>
+              {formatShortDate(props.detail?.date || "")}
+            </Label>
           </View>
-          <View>
-            <Label>{formatAmount(props.detail?.amount || 0)}</Label>
+          <View style={styles.primaryContainer}>
+            <Label style={{ color: Color.primary }}>
+              {formatAmount(props.detail?.amount || 0)}
+            </Label>
           </View>
         </>
       )}
@@ -85,7 +89,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: Size.padding,
   },
-  iconContainer: {
+  primaryContainer: {
     padding: 8,
     borderWidth: 1,
     borderColor: Color.primary,
@@ -99,6 +103,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-end",
+  },
+  detailsDate: {
+    backgroundColor: Color.gray,
+    borderRadius: 1000,
+    paddingHorizontal: 4,
   },
 });
 
