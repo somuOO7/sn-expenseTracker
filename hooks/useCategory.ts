@@ -13,7 +13,10 @@ const getIconName = (iconValue: keyof typeof Icon): string => {
   return entry ? entry[0] : "homeOutline";
 };
 
-const addCategory = async (category: CategoryType) => {
+const addCategory = async (
+  category: CategoryType,
+  type: "expense" | "invest"
+) => {
   try {
     useUiStore.getState().setShowLoader(true);
     const userId = await SecureStore.getItemAsync(SecureStoreKey.userId);
@@ -27,16 +30,33 @@ const addCategory = async (category: CategoryType) => {
       };
 
       if (docSnap.exists()) {
-        await updateDoc(docRef, { expenseList: arrayUnion(newCategory) });
+        await updateDoc(
+          docRef,
+          type === "expense"
+            ? { expenseList: arrayUnion(newCategory) }
+            : { investList: arrayUnion(newCategory) }
+        );
       } else {
         // Create new document with the category
-        await setDoc(docRef, { expenseList: [newCategory] });
+        await setDoc(
+          docRef,
+          type === "expense"
+            ? { expenseList: [newCategory] }
+            : { investList: [newCategory] }
+        );
       }
 
       useCategoryStore
         .getState()
         .setExpenseCategories([
           ...(docSnap.exists() ? docSnap.data()?.expenseList : []),
+          newCategory,
+        ]);
+
+      useCategoryStore
+        .getState()
+        .setInvestCategories([
+          ...(docSnap.exists() ? docSnap.data()?.investList : []),
           newCategory,
         ]);
 
@@ -57,16 +77,24 @@ const addCategory = async (category: CategoryType) => {
   }
 };
 
-const getCategory = async () => {
+const getCategory = async (type: "expense" | "invest") => {
   try {
     useUiStore.getState().setShowLoader(true);
     const userId = await SecureStore.getItemAsync(SecureStoreKey.userId);
     if (userId) {
       const docRef = doc(db, FirestoreCollectionName.categories, userId);
       const docSnap = await getDoc(docRef);
-      const result = docSnap.exists() ? docSnap.data().expenseList : [];
-      useCategoryStore.getState().setExpenseCategories(result);
-      return result;
+
+      const expenseCategoryList = docSnap.exists()
+        ? docSnap.data().expenseList
+        : [];
+      const investCategoryList = docSnap.exists()
+        ? docSnap.data().investList
+        : [];
+
+      useCategoryStore.getState().setExpenseCategories(expenseCategoryList);
+
+      return type === "expense" ? expenseCategoryList : investCategoryList;
     }
   } catch (error: any) {
     useUiStore.getState().showToast({

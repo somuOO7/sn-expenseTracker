@@ -16,7 +16,7 @@ import { StyleSheet, View } from "react-native";
 
 const addExpense = () => {
   const { type } = useLocalSearchParams<{ type: "invest" | "expense" }>();
-  const { expenseCategories } = useCategoryStore();
+  const { expenseCategories, investCategories } = useCategoryStore();
   const { getCategory } = useCategory;
   const { addExpense } = useExpense;
 
@@ -32,6 +32,7 @@ const addExpense = () => {
       isSelected: boolean;
       title: string;
       icon: keyof typeof Icon;
+      type: "expense" | "invest";
     }>
   >([]);
 
@@ -39,10 +40,11 @@ const addExpense = () => {
     useCallback(() => {
       const fetchCategory = async () => {
         let result = [];
-        if (expenseCategories.length === 0) {
-          result = await getCategory();
-        } else {
-          result = expenseCategories;
+
+        if (type === "expense") {
+          result = await getCategory("expense");
+        } else if (type === "invest") {
+          result = await getCategory("invest");
         }
 
         const updatedCategories = result?.map(
@@ -55,7 +57,7 @@ const addExpense = () => {
         setCategories(updatedCategories || []);
       };
       fetchCategory();
-    }, [])
+    }, [type])
   );
 
   useEffect(() => {
@@ -156,6 +158,7 @@ const addExpense = () => {
         title="Select category"
         data={categories}
         setSelected={setSelectedCategory}
+        categoryType={type}
       />
 
       <Button

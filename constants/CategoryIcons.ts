@@ -11,6 +11,9 @@ const CategoryIcons = [
   { id: "catIcon_8", icon: Icon.medical },
   { id: "catIcon_9", icon: Icon.party },
   { id: "catIcon_10", icon: Icon.travel },
+  { id: "catIcon_11", icon: Icon.deposite },
+  { id: "catIcon_12", icon: Icon.mutualFund },
+  { id: "catIcon_13", icon: Icon.stock },
 ];
 
 export default CategoryIcons;

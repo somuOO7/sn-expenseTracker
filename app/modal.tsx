@@ -8,7 +8,10 @@ import { StyleSheet, TouchableWithoutFeedback, View } from "react-native";
 
 const modal = () => {
   const router = useRouter();
-  const { type } = useLocalSearchParams<{ type: ModalCategory }>();
+  const { type, categoryType } = useLocalSearchParams<{
+    type: ModalCategory;
+    categoryType: "expense" | "invest";
+  }>();
   const { showLoader } = useUiStore();
 
   return (
@@ -17,7 +20,9 @@ const modal = () => {
         <View style={[styles.overlay, StyleSheet.absoluteFill]} />
       </TouchableWithoutFeedback>
       <View style={styles.container}>
-        {type === ModalCategory.ADD_CATEGORY && <AddCategory />}
+        {type === ModalCategory.ADD_CATEGORY && (
+          <AddCategory categoryType={categoryType} />
+        )}
       </View>
       {showLoader && <Loader />}
     </>

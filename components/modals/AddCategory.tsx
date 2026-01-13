@@ -7,7 +7,11 @@ import React, { useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Button, Input, Label } from "../ui";
 
-const AddCategory = () => {
+interface AddCategoryProps {
+  categoryType: "expense" | "invest";
+}
+
+const AddCategory = (props: AddCategoryProps) => {
   const { addCategory } = useCategory;
   const router = useRouter();
   const [categoryName, setCategoryName] = useState("");
@@ -18,11 +22,14 @@ const AddCategory = () => {
       const selectedIconObj = CategoryIcons.find(
         (icon) => icon.id === selectedIcon
       );
-      await addCategory({
-        title: categoryName,
-        icon: selectedIconObj?.icon,
-        id: randomUUID(),
-      });
+      await addCategory(
+        {
+          title: categoryName,
+          icon: selectedIconObj?.icon,
+          id: randomUUID(),
+        },
+        props.categoryType
+      );
       router.back();
     } catch (error) {
       console.error("Error in handleAddCategory:", error);
