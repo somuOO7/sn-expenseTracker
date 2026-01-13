@@ -7,6 +7,7 @@ import {
 } from "@/components/ui";
 import { Color, CommonStyles, Icon, Size } from "@/constants";
 import { useCategory, useExpense } from "@/hooks";
+import { useCategoryStore } from "@/store";
 import * as Crypto from "expo-crypto";
 import { Image } from "expo-image";
 import { useFocusEffect } from "expo-router";
@@ -14,6 +15,7 @@ import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
 const addExpense = () => {
+  const { expenseCategories } = useCategoryStore();
   const { getCategory } = useCategory;
   const { addExpense } = useExpense;
 
@@ -35,7 +37,12 @@ const addExpense = () => {
   useFocusEffect(
     useCallback(() => {
       const fetchCategory = async () => {
-        const result = await getCategory();
+        let result = [];
+        if (expenseCategories.length === 0) {
+          result = await getCategory();
+        } else {
+          result = expenseCategories;
+        }
 
         const updatedCategories = result?.map(
           (category: any, index: number) => ({

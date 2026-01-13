@@ -1,25 +1,47 @@
 import { Color, Size } from "@/constants";
 import Icon from "@/constants/Icons";
+import { useCategoryStore } from "@/store";
 import { Image } from "expo-image";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Label } from "../ui";
 
 interface ListTileProps {
-  icon: keyof typeof Icon;
+  title: string;
+  icon?: keyof typeof Icon;
+  categoryId?: string;
 }
 
 const ListTile = (props: ListTileProps) => {
+  const { expenseCategories } = useCategoryStore();
+
+  const getIconSource = () => {
+    let iconSource;
+    if (props.categoryId) {
+      const category = expenseCategories.find(
+        (category) => category.id === props.categoryId
+      );
+
+      if (category && category.icon) {
+        iconSource = Icon[category.icon];
+      }
+    } else if (props.icon) {
+      iconSource = props.icon;
+    }
+
+    return iconSource;
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.iconContainer}>
         <Image
-          source={props.icon}
+          source={getIconSource()}
           style={[styles.icon, { tintColor: Color.primary }]}
         />
       </View>
 
-      <Label style={styles.title}>ListTile</Label>
+      <Label style={styles.title}>{props.title}</Label>
 
       <View style={styles.subtitleContianer}>
         <Image

@@ -1,9 +1,8 @@
 import { db } from "@/config/firebaseConfig";
 import { Icon, SecureStoreKey } from "@/constants";
 import FirestoreCollectionName from "@/constants/FirestoreCollectionName";
-import { useUiStore } from "@/store";
+import { useCategoryStore, useUiStore } from "@/store";
 import { CategoryType } from "@/types";
-import * as Crypto from "expo-crypto";
 import * as SecureStore from "expo-secure-store";
 import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
@@ -23,8 +22,7 @@ const addCategory = async (category: CategoryType) => {
       const docSnap = await getDoc(docRef);
 
       const newCategory = {
-        id: Crypto.randomUUID(),
-        title: category.title,
+        ...category,
         icon: getIconName(category.icon),
       };
 
@@ -34,6 +32,13 @@ const addCategory = async (category: CategoryType) => {
         // Create new document with the category
         await setDoc(docRef, { expenseList: [newCategory] });
       }
+
+      useCategoryStore
+        .getState()
+        .setExpenseCategories([
+          ...(docSnap.exists() ? docSnap.data()?.expenseList : []),
+          newCategory,
+        ]);
 
       useUiStore.getState().showToast({
         message: "Category added successfully",
@@ -59,7 +64,9 @@ const getCategory = async () => {
     if (userId) {
       const docRef = doc(db, FirestoreCollectionName.categories, userId);
       const docSnap = await getDoc(docRef);
-      return docSnap.exists() ? docSnap.data().expenseList : [];
+      const result = docSnap.exists() ? docSnap.data().expenseList : [];
+      useCategoryStore.getState().setExpenseCategories(result);
+      return result;
     }
   } catch (error: any) {
     useUiStore.getState().showToast({

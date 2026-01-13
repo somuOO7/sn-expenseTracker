@@ -1,5 +1,6 @@
 import { CategoryIcons, Color, CommonStyles, Size } from "@/constants";
 import { useCategory } from "@/hooks";
+import { randomUUID } from "expo-crypto";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
@@ -17,7 +18,11 @@ const AddCategory = () => {
       const selectedIconObj = CategoryIcons.find(
         (icon) => icon.id === selectedIcon
       );
-      await addCategory({ title: categoryName, icon: selectedIconObj?.icon });
+      await addCategory({
+        title: categoryName,
+        icon: selectedIconObj?.icon,
+        id: randomUUID(),
+      });
       router.back();
     } catch (error) {
       console.error("Error in handleAddCategory:", error);

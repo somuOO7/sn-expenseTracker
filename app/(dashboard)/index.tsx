@@ -1,7 +1,7 @@
 import { ListTile, WalletCard } from "@/components/dashboard";
 import { Label, SafeAreaContainer } from "@/components/ui";
 import { Color, CommonStyles, Icon, Size } from "@/constants";
-import { useExpense } from "@/hooks";
+import { useCategory, useExpense } from "@/hooks";
 import { ExpenseType } from "@/types";
 import { Image } from "expo-image";
 import { useFocusEffect } from "expo-router";
@@ -10,16 +10,18 @@ import { ScrollView, StyleSheet, View } from "react-native";
 
 const index = () => {
   const { getExpenses } = useExpense;
+  const { getCategory } = useCategory;
 
   const [expenses, setExpenses] = useState<ExpenseType[]>([]);
 
   useFocusEffect(
     useCallback(() => {
-      const fetchExpenses = async () => {
+      const callInitialAPIs = async () => {
         const expensesData = await getExpenses();
         setExpenses(expensesData);
+        await getCategory();
       };
-      fetchExpenses();
+      callInitialAPIs();
     }, [])
   );
 
@@ -31,7 +33,7 @@ const index = () => {
         {/* Monthly statement section */}
         <View>
           <Label>Monthly statement</Label>
-          <ListTile icon={Icon.car} />
+          <ListTile title="Car" icon={Icon.car} />
         </View>
 
         {/* Recent expense section */}
@@ -46,7 +48,11 @@ const index = () => {
             </View>
           ) : (
             expenses.map((expense) => (
-              <ListTile key={expense.id} icon={Icon.calendarOutline} />
+              <ListTile
+                key={expense.id}
+                title={expense.note}
+                categoryId={expense.categoryId}
+              />
             ))
           )}
         </View>
