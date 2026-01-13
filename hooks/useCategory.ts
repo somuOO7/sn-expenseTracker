@@ -29,10 +29,10 @@ const addCategory = async (category: CategoryType) => {
       };
 
       if (docSnap.exists()) {
-        await updateDoc(docRef, { list: arrayUnion(newCategory) });
+        await updateDoc(docRef, { expenseList: arrayUnion(newCategory) });
       } else {
         // Create new document with the category
-        await setDoc(docRef, { list: [newCategory] });
+        await setDoc(docRef, { expenseList: [newCategory] });
       }
 
       useUiStore.getState().showToast({
@@ -59,7 +59,7 @@ const getCategory = async () => {
     if (userId) {
       const docRef = doc(db, FirestoreCollectionName.categories, userId);
       const docSnap = await getDoc(docRef);
-      return docSnap.exists() ? docSnap.data().list : [];
+      return docSnap.exists() ? docSnap.data().expenseList : [];
     }
   } catch (error: any) {
     useUiStore.getState().showToast({

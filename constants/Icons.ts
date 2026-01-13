@@ -23,6 +23,7 @@ const Icon = {
   travel: require("@/assets/icons/travel.svg"),
   walletFill: require("@/assets/icons/wallet-fill.svg"),
   walletOutline: require("@/assets/icons/wallet-outline.svg"),
+  warning: require("@/assets/icons/warning.svg"),
 };
 
 export default Icon;

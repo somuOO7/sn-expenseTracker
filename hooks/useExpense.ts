@@ -15,9 +15,9 @@ const addExpense = async (expense: ExpenseType) => {
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        await updateDoc(docRef, { list: arrayUnion(expense) });
+        await updateDoc(docRef, { data: arrayUnion(expense) });
       } else {
-        await setDoc(docRef, { list: [expense] });
+        await setDoc(docRef, { data: [expense] });
       }
 
       useUiStore.getState().showToast({
@@ -45,7 +45,7 @@ const getExpenses = async (): Promise<ExpenseType[]> => {
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        return docSnap.data().list as ExpenseType[];
+        return docSnap.data().data as ExpenseType[];
       } else {
         return [];
       }

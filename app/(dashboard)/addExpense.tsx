@@ -37,14 +37,14 @@ const addExpense = () => {
       const fetchCategory = async () => {
         const result = await getCategory();
 
-        const updatedCategories = result.map(
+        const updatedCategories = result?.map(
           (category: any, index: number) => ({
             ...category,
             isSelected: index === 0,
           })
         );
 
-        setCategories(updatedCategories);
+        setCategories(updatedCategories || []);
       };
       fetchCategory();
     }, [])
