@@ -135,7 +135,7 @@ const addExpense = () => {
               }}
             />
           }
-          placeholder="Add a note (optional)"
+          placeholder="Add a note"
           variant="small"
           containerStyle={{ flex: 2 }}
           value={formData.note}
@@ -153,7 +153,12 @@ const addExpense = () => {
       <Button
         title="Save"
         variant="primary"
-        disabled={!formData.amount || !formData.categoryId || !formData.date}
+        disabled={
+          !formData.amount ||
+          !formData.categoryId ||
+          !formData.date ||
+          !formData.note
+        }
         onPress={handleAddExpenseButtonClick}
       />
     </SafeAreaContainer>
