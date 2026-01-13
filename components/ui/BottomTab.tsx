@@ -1,13 +1,10 @@
 import { bottomTabItems, Color, CommonStyles, Icon, Size } from "@/constants";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { Image } from "expo-image";
-import { useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import Label from "./Label";
 
 const BottomTab = ({ state, navigation }: BottomTabBarProps) => {
-  const [isPlusClicked, setIsPlusClicked] = useState(false);
-
   const renderTabs = () => {
     const tabs = [];
     for (let i = 0; i < bottomTabItems.length; i++) {
@@ -16,9 +13,6 @@ const BottomTab = ({ state, navigation }: BottomTabBarProps) => {
       const isFocused = state.index === i;
 
       const onPress = () => {
-        if (isPlusClicked) {
-          setIsPlusClicked(false);
-        }
         const event = navigation.emit({
           type: "tabPress",
           target: route.key,
@@ -74,7 +68,7 @@ const BottomTab = ({ state, navigation }: BottomTabBarProps) => {
               backgroundColor: isAddExpenseFocused ? Color.primary : Color.gray,
             },
           ]}
-          onPress={() => setIsPlusClicked(!isPlusClicked)}
+          onPress={() => navigation.navigate("addExpense")}
         >
           <Image
             source={Icon.plus}
@@ -82,36 +76,6 @@ const BottomTab = ({ state, navigation }: BottomTabBarProps) => {
             contentFit="contain"
           />
         </TouchableOpacity>
-
-        {isPlusClicked && (
-          <>
-            <TouchableOpacity
-              style={[styles.optionIcon, { left: -2 * Size.padding }]}
-              onPress={() => {
-                navigation.navigate("addExpense");
-                setIsPlusClicked(false);
-              }}
-            >
-              <Image
-                source={Icon.expense}
-                style={[styles.icon, { tintColor: Color.white }]}
-              />
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[styles.optionIcon, , { right: -2 * Size.padding }]}
-              onPress={() => {
-                navigation.navigate("addExpense", { type: "invest" });
-                setIsPlusClicked(false);
-              }}
-            >
-              <Image
-                source={Icon.invest}
-                style={[styles.icon, { tintColor: Color.white }]}
-              />
-            </TouchableOpacity>
-          </>
-        )}
       </View>
     </View>
   );
@@ -152,13 +116,6 @@ const styles = StyleSheet.create({
   icon: {
     height: Size.iconSize,
     width: Size.iconSize,
-  },
-  optionIcon: {
-    position: "absolute",
-    top: -2 * Size.padding,
-    backgroundColor: Color.secondary,
-    borderRadius: 100,
-    padding: Size.padding / 2,
   },
   buttons: {
     alignItems: "center",
