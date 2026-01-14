@@ -1,6 +1,7 @@
 import { Color, CommonStyles, Icon, ModalCategory, Size } from "@/constants";
 import { useMutualFund } from "@/hooks";
 import { Image } from "expo-image";
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Button, Input, Label } from "../ui";
@@ -10,6 +11,7 @@ interface AddCashPlusProps {
 }
 
 const AddCashPlus = (props: AddCashPlusProps) => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     mutualFundName: "",
     schemeCode: "",
@@ -19,7 +21,7 @@ const AddCashPlus = (props: AddCashPlusProps) => {
   const [isFundListVisible, setIsFundListVisible] = useState(false);
   const [fundData, setFundData] = useState<Array<any>>([]);
 
-  const { getMutualFund } = useMutualFund;
+  const { addMutualFund, getMutualFund } = useMutualFund;
 
   const handleFundNameChange = async (text: string) => {
     setFormData({ ...formData, mutualFundName: text });
@@ -39,6 +41,15 @@ const AddCashPlus = (props: AddCashPlusProps) => {
       schemeCode: item.schemeCode,
     });
     setIsFundListVisible(false);
+  };
+
+  const handleSubmitFund = () => {
+    addMutualFund({
+      data: [{ amount: formData.amount, date: formData.date, nav: "123" }],
+      schemeCode: formData.schemeCode,
+      schemeName: formData.mutualFundName,
+    });
+    router.back();
   };
 
   return (
@@ -75,11 +86,20 @@ const AddCashPlus = (props: AddCashPlusProps) => {
         }
         placeholder="Today"
         variant="small"
+        value={formData.date}
+        onChangeText={(text) => setFormData({ ...formData, date: text })}
       />
 
-      <Input placeholder="0.00" title="Amount" variant="small" prefixIcon="₹" />
+      <Input
+        placeholder="0.00"
+        title="Amount"
+        variant="small"
+        prefixIcon="₹"
+        value={formData.amount}
+        onChangeText={(text) => setFormData({ ...formData, amount: text })}
+      />
 
-      <Button title="Submit" variant="primary" />
+      <Button title="Submit" variant="primary" onPress={handleSubmitFund} />
     </View>
   );
 };
