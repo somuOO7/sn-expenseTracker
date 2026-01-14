@@ -95,16 +95,16 @@ export const getNavByDate = async (schemeCode: string, date: string) => {
 
     let navByDate = null;
     const targetDate = new Date(date);
-    const nevBeforeDate = navData
+    const navOnOrAfterDate = navData
       .map((nav) => ({
         ...nav,
         parsedDate: new Date(nav.date.split("-").reverse().join("-")),
       }))
-      .filter((nav) => nav.parsedDate <= targetDate)
-      .sort((a, b) => b.parsedDate.getTime() - a.parsedDate.getTime());
+      .filter((nav) => nav.parsedDate >= targetDate)
+      .sort((a, b) => a.parsedDate.getTime() - b.parsedDate.getTime());
 
-    if (nevBeforeDate.length > 0) {
-      navByDate = nevBeforeDate[0];
+    if (navOnOrAfterDate.length > 0) {
+      navByDate = navOnOrAfterDate[0];
     }
 
     return navByDate.nav;
