@@ -1,6 +1,6 @@
 import { Color, CommonStyles, Icon, ModalCategory, Size } from "@/constants";
 import { Image } from "expo-image";
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Button, Input, Label } from "../ui";
 
@@ -9,6 +9,22 @@ interface AddCashPlusProps {
 }
 
 const AddCashPlus = (props: AddCashPlusProps) => {
+  const [formData, setFormData] = useState({
+    mutualFundName: "",
+    date: "",
+    amount: "",
+  });
+  const [isFundListVisible, setIsFundListVisible] = useState(false);
+
+  const handleFundNameChange = (text: string) => {
+    setFormData({ ...formData, mutualFundName: text });
+    if (text.length > 3) {
+      setIsFundListVisible(true);
+    } else {
+      setIsFundListVisible(false);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Label variant="bold" style={CommonStyles.pageTitle}>
@@ -21,6 +37,9 @@ const AddCashPlus = (props: AddCashPlusProps) => {
         placeholder="Enter mutual fund name"
         title="Mutual fund name"
         variant="small"
+        isDropdown={isFundListVisible}
+        value={formData.mutualFundName}
+        onChangeText={handleFundNameChange}
       />
 
       <Input

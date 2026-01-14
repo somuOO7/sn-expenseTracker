@@ -1,8 +1,10 @@
 import { Color, CommonStyles, Size } from "@/constants";
 import {
+  FlatList,
   StyleSheet,
   TextInput,
   TextInputProps,
+  TouchableOpacity,
   View,
   ViewStyle,
 } from "react-native";
@@ -14,6 +16,8 @@ interface InputProps extends TextInputProps {
   prefixIcon?: React.ReactNode | string;
   variant: "large" | "small";
   containerStyle?: ViewStyle;
+  isDropdown?: boolean;
+  dropDownData?: { type: "mutual-fund"; data: any };
 }
 
 const Input = (props: InputProps) => {
@@ -61,6 +65,20 @@ const Input = (props: InputProps) => {
           ]}
         />
       </View>
+      {/* Dropdown */}
+      {props.isDropdown && (
+        <View style={[styles.dropDownContainer, CommonStyles.shadowStyle]}>
+          <FlatList
+            data={props.dropDownData?.data}
+            keyExtractor={(_, index) => index.toString()}
+            renderItem={({ item }) => (
+              <TouchableOpacity style={styles.dropdownItem}>
+                <Label numberOfLines={1}>{item}</Label>
+              </TouchableOpacity>
+            )}
+          />
+        </View>
+      )}
     </View>
   );
 };
@@ -99,6 +117,22 @@ const styles = StyleSheet.create({
   },
   smallPrefixText: { color: Color.white },
   smallInput: { color: Color.white, fontSize: Size.fontSize, flex: 1 },
+  dropDownContainer: {
+    position: "absolute",
+    backgroundColor: Color.white,
+    padding: Size.padding,
+    borderRadius: Size.borderRadius,
+    left: 0,
+    right: 0,
+    top: 2 * Size.padding + 2 * Size.fontSize + 12,
+    zIndex: 1000,
+    maxHeight: 120,
+  },
+  dropdownItem: {
+    paddingVertical: Size.padding / 2,
+    borderBottomWidth: 1,
+    borderColor: Color.gray,
+  },
 });
 
 export default Input;
