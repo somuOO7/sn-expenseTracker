@@ -21,7 +21,7 @@ const AddCashPlus = (props: AddCashPlusProps) => {
   const [isFundListVisible, setIsFundListVisible] = useState(false);
   const [fundData, setFundData] = useState<Array<any>>([]);
 
-  const { addMutualFund, getMutualFund } = useMutualFund;
+  const { addMutualFund, getMutualFund, getNavByDate } = useMutualFund;
 
   const handleFundNameChange = async (text: string) => {
     setFormData({ ...formData, mutualFundName: text });
@@ -43,9 +43,10 @@ const AddCashPlus = (props: AddCashPlusProps) => {
     setIsFundListVisible(false);
   };
 
-  const handleSubmitFund = () => {
-    addMutualFund({
-      data: [{ amount: formData.amount, date: formData.date, nav: "123" }],
+  const handleSubmitFund = async () => {
+    const nav = await getNavByDate(formData.schemeCode, formData.date);
+    await addMutualFund({
+      data: [{ amount: formData.amount, date: formData.date, nav: nav }],
       schemeCode: formData.schemeCode,
       schemeName: formData.mutualFundName,
     });
