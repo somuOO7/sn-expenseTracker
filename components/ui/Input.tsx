@@ -1,4 +1,6 @@
 import { Color, CommonStyles, Size } from "@/constants";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { useState } from "react";
 import {
   FlatList,
   StyleSheet,
@@ -14,7 +16,7 @@ interface InputProps extends TextInputProps {
   title: string;
   placeholder: string;
   prefixIcon?: React.ReactNode | string;
-  variant: "large" | "small";
+  variant: "large" | "small" | "datepicker";
   containerStyle?: ViewStyle;
   isDropdown?: boolean;
   dropDownData?: { type: "mutual-fund"; data: any };
@@ -22,6 +24,8 @@ interface InputProps extends TextInputProps {
 }
 
 const Input = (props: InputProps) => {
+  const [showDateSelector, setShowDateSelector] = useState(false);
+
   return (
     <View style={props.containerStyle}>
       <Label variant="semibold" style={styles.title}>
@@ -50,22 +54,43 @@ const Input = (props: InputProps) => {
           ) : (
             props.prefixIcon
           ))}
-        <TextInput
-          {...props}
-          placeholder={props.placeholder}
-          placeholderTextColor={
-            props.variant === "small" ? Color.white : Color.gray
-          }
-          style={[
-            props.variant === "large" ? styles.largeInput : styles.smallInput,
-            props.variant === "large" &&
-              props.value && {
-                width: Math.max(100, props.value.length * 20 + 30),
-              },
-            { fontFamily: props.variant === "large" ? "Bold" : "Regular" },
-          ]}
-        />
+
+        {props.variant === "datepicker" ? (
+          <TouchableOpacity
+            style={{ flex: 1 }}
+            onPress={() => {
+              setShowDateSelector(true);
+            }}
+            activeOpacity={0.7}
+          >
+            <TextInput
+              {...props}
+              editable={false}
+              placeholder={props.placeholder}
+              placeholderTextColor={Color.white}
+              style={[styles.smallInput, { fontFamily: "Regular" }]}
+              pointerEvents="none"
+            />
+          </TouchableOpacity>
+        ) : (
+          <TextInput
+            {...props}
+            placeholder={props.placeholder}
+            placeholderTextColor={
+              props.variant === "small" ? Color.white : Color.gray
+            }
+            style={[
+              props.variant === "large" ? styles.largeInput : styles.smallInput,
+              props.variant === "large" &&
+                props.value && {
+                  width: Math.max(100, props.value.length * 20 + 30),
+                },
+              { fontFamily: props.variant === "large" ? "Bold" : "Regular" },
+            ]}
+          />
+        )}
       </View>
+
       {/* Dropdown */}
       {props.isDropdown && (
         <View style={[styles.dropDownContainer, CommonStyles.shadowStyle]}>
@@ -83,6 +108,23 @@ const Input = (props: InputProps) => {
                 <Label numberOfLines={0}>{item.schemeName}</Label>
               </TouchableOpacity>
             )}
+          />
+        </View>
+      )}
+
+      {props.variant === "datepicker" && showDateSelector && (
+        <View style={[styles.datePickerContainer, CommonStyles.shadowStyle]}>
+          <DateTimePicker
+            mode="date"
+            display="inline"
+            value={new Date(props.value || new Date())}
+            onChange={(text) => {
+              const date: string = new Date(text.nativeEvent.timestamp)
+                .toISOString()
+                .split("T")[0];
+              props.onChangeText?.(date);
+              setShowDateSelector(false);
+            }}
           />
         </View>
       )}
@@ -139,6 +181,14 @@ const styles = StyleSheet.create({
     paddingVertical: Size.padding / 2,
     borderBottomWidth: 1,
     borderColor: Color.gray,
+  },
+  datePickerContainer: {
+    backgroundColor: Color.white,
+    position: "absolute",
+    top: 2 * Size.padding + 2 * Size.fontSize + 12,
+    zIndex: 1000,
+    borderRadius: Size.borderRadius,
+    padding: Size.padding,
   },
 });
 

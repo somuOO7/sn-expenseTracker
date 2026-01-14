@@ -23,7 +23,7 @@ const addExpense = () => {
     amount: "",
     categoryId: "",
     note: "",
-    date: new Date().toLocaleDateString(),
+    date: new Date().toISOString().split("T")[0],
   });
   const [categories, setCategories] = useState<
     Array<{
@@ -127,8 +127,10 @@ const addExpense = () => {
             />
           }
           placeholder="Today"
-          variant="small"
+          variant="datepicker"
           containerStyle={{ flex: 1 }}
+          value={formData.date}
+          onChangeText={(text) => setFormData({ ...formData, date: text })}
         />
         <Input
           title="Add note"
@@ -144,7 +146,7 @@ const addExpense = () => {
           }
           placeholder="Add a note"
           variant="small"
-          containerStyle={{ flex: 2 }}
+          containerStyle={{ flex: 1 }}
           value={formData.note}
           onChangeText={(text) => setFormData({ ...formData, note: text })}
         />

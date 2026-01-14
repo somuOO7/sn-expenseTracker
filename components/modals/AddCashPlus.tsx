@@ -85,7 +85,7 @@ const AddCashPlus = (props: AddCashPlusProps) => {
           />
         }
         placeholder="Today"
-        variant="small"
+        variant="datepicker"
         value={formData.date}
         onChangeText={(text) => setFormData({ ...formData, date: text })}
       />

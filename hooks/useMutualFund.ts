@@ -55,7 +55,6 @@ export const addMutualFund = async (data: MutualFundType) => {
           await updateDoc(docRef, { mutualFunds: mutualFundData });
         }
       } else {
-        // Create new document with the category
         await setDoc(docRef, { mutualFunds: [data] });
       }
 
