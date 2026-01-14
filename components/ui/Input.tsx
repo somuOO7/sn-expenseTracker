@@ -18,6 +18,7 @@ interface InputProps extends TextInputProps {
   containerStyle?: ViewStyle;
   isDropdown?: boolean;
   dropDownData?: { type: "mutual-fund"; data: any };
+  onDropdownItemSelect?: (item: any) => void;
 }
 
 const Input = (props: InputProps) => {
@@ -70,10 +71,16 @@ const Input = (props: InputProps) => {
         <View style={[styles.dropDownContainer, CommonStyles.shadowStyle]}>
           <FlatList
             data={props.dropDownData?.data}
-            keyExtractor={(_, index) => index.toString()}
+            keyExtractor={(item) => item.schemeCode}
             renderItem={({ item }) => (
-              <TouchableOpacity style={styles.dropdownItem}>
-                <Label numberOfLines={1}>{item}</Label>
+              <TouchableOpacity
+                style={styles.dropdownItem}
+                onPress={() => {
+                  props.onChangeText?.(item.schemeName);
+                  props.onDropdownItemSelect?.(item);
+                }}
+              >
+                <Label numberOfLines={0}>{item.schemeName}</Label>
               </TouchableOpacity>
             )}
           />
@@ -126,7 +133,7 @@ const styles = StyleSheet.create({
     right: 0,
     top: 2 * Size.padding + 2 * Size.fontSize + 12,
     zIndex: 1000,
-    maxHeight: 120,
+    maxHeight: 150,
   },
   dropdownItem: {
     paddingVertical: Size.padding / 2,

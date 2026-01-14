@@ -1,4 +1,5 @@
 import { Color, CommonStyles, Icon, ModalCategory, Size } from "@/constants";
+import { useMutualFund } from "@/hooks";
 import { Image } from "expo-image";
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
@@ -11,18 +12,33 @@ interface AddCashPlusProps {
 const AddCashPlus = (props: AddCashPlusProps) => {
   const [formData, setFormData] = useState({
     mutualFundName: "",
+    schemeCode: "",
     date: "",
     amount: "",
   });
   const [isFundListVisible, setIsFundListVisible] = useState(false);
+  const [fundData, setFundData] = useState<Array<any>>([]);
 
-  const handleFundNameChange = (text: string) => {
+  const { getMutualFund } = useMutualFund;
+
+  const handleFundNameChange = async (text: string) => {
     setFormData({ ...formData, mutualFundName: text });
     if (text.length > 3) {
       setIsFundListVisible(true);
+      const mfData = await getMutualFund({ q: text });
+      setFundData(mfData || []);
     } else {
       setIsFundListVisible(false);
     }
+  };
+
+  const handleFundSelect = (item: any) => {
+    setFormData({
+      ...formData,
+      mutualFundName: item.schemeName,
+      schemeCode: item.schemeCode,
+    });
+    setIsFundListVisible(false);
   };
 
   return (
@@ -38,8 +54,11 @@ const AddCashPlus = (props: AddCashPlusProps) => {
         title="Mutual fund name"
         variant="small"
         isDropdown={isFundListVisible}
+        dropDownData={{ data: fundData, type: "mutual-fund" }}
         value={formData.mutualFundName}
         onChangeText={handleFundNameChange}
+        onDropdownItemSelect={handleFundSelect}
+        onBlur={() => setIsFundListVisible(false)}
       />
 
       <Input
