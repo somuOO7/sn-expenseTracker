@@ -32,58 +32,41 @@ export const getFundChartData = async (
   );
 
   qtyBalance = 0;
-  const chartData: Array<{
-    value: number;
-    label?: string;
-    showXAxisIndex?: boolean;
-  }> = [];
-
-  // Single-pass iteration to build chart data
-  for (let i = 0; i < parsedNavData.length; i++) {
-    const nav = parsedNavData[i];
-    const matchingQty = dataMap.get(nav.parsedDate.getTime());
-
-    if (matchingQty !== undefined) {
-      qtyBalance = matchingQty;
-    }
-
-    if (qtyBalance > 0) {
-      chartData.push({
-        value: nav.nav * qtyBalance,
-      });
-    }
-  }
-
-  // Calculate label positions
-  const noOfSeparations = Math.ceil(chartData.length / 3);
-  let navIndex = 0;
-
-  // Add labels in a second pass (only for labeled items)
-  for (let i = 0; i < chartData.length; i++) {
-    // Find corresponding nav entry
-    while (navIndex < parsedNavData.length) {
-      const nav = parsedNavData[navIndex];
+  let chartData = parsedNavData.reduce<Array<{ value: number; date: string }>>(
+    (acc, nav) => {
       const matchingQty = dataMap.get(nav.parsedDate.getTime());
 
       if (matchingQty !== undefined) {
         qtyBalance = matchingQty;
       }
 
-      navIndex++;
-
       if (qtyBalance > 0) {
-        break;
+        acc.push({
+          value: nav.nav * qtyBalance,
+          date: `${nav.parsedDate.getDate()} ${nav.parsedDate
+            .toUTCString()
+            .slice(8, 11)}'${nav.parsedDate.getFullYear().toString().slice(2)}`,
+        });
       }
-    }
 
-    if (i % noOfSeparations === 0 || i === chartData.length - 1) {
-      const date = parsedNavData[navIndex - 1].parsedDate;
-      chartData[i].label = `${date.getDate()} ${date.toLocaleString("default", {
-        month: "short",
-      })}'${date.getFullYear().toString().slice(2)}`;
-      chartData[i].showXAxisIndex = true;
-    }
-  }
+      return acc;
+    },
+    []
+  );
 
-  return chartData;
+  const noOfSeparations = Math.ceil(chartData.length / 4);
+
+  return chartData.map((item, index) => {
+    if (index % noOfSeparations === 0 || index === chartData.length - 1) {
+      return {
+        value: item.value,
+        label: item.date,
+        showXAxisIndex: true,
+      };
+    } else {
+      return {
+        value: item.value,
+      };
+    }
+  });
 };
