@@ -21,13 +21,13 @@ const AddCashPlus = (props: AddCashPlusProps) => {
   const [isFundListVisible, setIsFundListVisible] = useState(false);
   const [fundData, setFundData] = useState<Array<any>>([]);
 
-  const { addMutualFund, getMutualFund, getNavByDate } = useMutualFund;
+  const { addMutualFund, getMutualFundByQuery, getNavByDate } = useMutualFund;
 
   const handleFundNameChange = async (text: string) => {
     setFormData({ ...formData, mutualFundName: text });
     if (text.length > 3) {
       setIsFundListVisible(true);
-      const mfData = await getMutualFund({ q: text });
+      const mfData = await getMutualFundByQuery({ q: text });
       setFundData(mfData || []);
     } else {
       setIsFundListVisible(false);

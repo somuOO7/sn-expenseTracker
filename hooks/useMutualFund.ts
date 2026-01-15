@@ -11,7 +11,7 @@ import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
-export const getMutualFund = async (query: { q: string }) => {
+export const getMutualFundByQuery = async (query: { q: string }) => {
   try {
     // useUiStore.getState().setShowLoader(true);
 
@@ -31,6 +31,22 @@ export const getMutualFund = async (query: { q: string }) => {
     });
   } finally {
     // useUiStore.getState().setShowLoader(false);
+  }
+};
+
+export const getMutualFundStore = async () => {
+  const userId = await SecureStore.getItemAsync(SecureStoreKey.userId);
+
+  if (userId) {
+    const docRef = doc(db, FireStoreCollectionName.cashPlus, userId);
+    const updatedResult = await getDoc(docRef);
+    if (updatedResult.exists()) {
+      const mutualFundStoreData = updatedResult.data()
+        .mutualFunds as Array<MutualFundType>;
+      useCashPlusStore.getState().setMutualFundStore(mutualFundStoreData);
+    } else {
+      useCashPlusStore.getState().setMutualFundStore([]);
+    }
   }
 };
 
@@ -58,12 +74,7 @@ export const addMutualFund = async (data: MutualFundType) => {
         await setDoc(docRef, { mutualFunds: [data] });
       }
 
-      const updatedResult = await getDoc(docRef);
-      if (updatedResult.exists()) {
-        const mutualFundStoreData = updatedResult.data()
-          .mutualFunds as Array<MutualFundType>;
-        useCashPlusStore.getState().setMutualFundStore(mutualFundStoreData);
-      }
+      await getMutualFundStore();
 
       useUiStore.getState().showToast({
         message: "Fund added successfully",

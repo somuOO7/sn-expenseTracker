@@ -1,13 +1,17 @@
-import { ListTile } from "@/components/dashboard";
 import { Button, SafeAreaContainer } from "@/components/ui";
 import { ModalCategory } from "@/constants";
-import { useCashPlusStore } from "@/store";
+import { useMutualFund } from "@/hooks";
 import { useRouter } from "expo-router";
+import { useEffect } from "react";
 import { View } from "react-native";
 
 const cashPlus = () => {
   const router = useRouter();
-  const { mutualFundStore } = useCashPlusStore();
+  const { getMutualFundStore } = useMutualFund;
+
+  useEffect(() => {
+    getMutualFundStore();
+  }, []);
 
   return (
     <SafeAreaContainer style={{ flex: 1 }}>
@@ -33,14 +37,6 @@ const cashPlus = () => {
           }
         />
       </View>
-
-      {mutualFundStore.map((fund) => (
-        <ListTile
-          key={fund.schemeCode}
-          title={fund.schemeName}
-          variant="analytic"
-        />
-      ))}
     </SafeAreaContainer>
   );
 };
