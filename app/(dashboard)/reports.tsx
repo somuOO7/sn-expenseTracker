@@ -41,7 +41,11 @@ const reports = () => {
           curved
           hideDataPoints
           yAxisTextStyle={{ fontFamily: "Regular" }}
-          xAxisLabelTextStyle={{ width: 80, marginLeft: -40 }}
+          xAxisLabelTextStyle={{
+            fontFamily: "Regular",
+            width: 80,
+            marginLeft: -40,
+          }}
           noOfSections={4}
           showYAxisIndices
         />
