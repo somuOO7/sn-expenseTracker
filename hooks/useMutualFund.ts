@@ -34,6 +34,28 @@ export const getMutualFundByQuery = async (query: { q: string }) => {
   }
 };
 
+export const getMutualFundDetailsBySchemeCode = async (schemeCode: string) => {
+  try {
+    useUiStore.getState().setShowLoader(true);
+
+    const result = await axios({
+      baseURL: BaseUrl.mutualfundBase,
+      url: `${schemeCode}`,
+      method: "get",
+    });
+
+    return result.data;
+  } catch (error) {
+    useUiStore.getState().showToast({
+      message: error as string,
+      variant: "failure",
+      visible: true,
+    });
+  } finally {
+    useUiStore.getState().setShowLoader(false);
+  }
+};
+
 export const getMutualFundStore = async () => {
   const userId = await SecureStore.getItemAsync(SecureStoreKey.userId);
 
@@ -93,16 +115,15 @@ export const addMutualFund = async (data: MutualFundType) => {
   }
 };
 
-export const getNavByDate = async (schemeCode: string, date: string) => {
+export const getNavByDate = async (
+  schemeCode: string,
+  date: string
+): Promise<{ nav: string; date: string } | null> => {
   try {
     useUiStore.getState().setShowLoader(true);
-    const result = await axios({
-      baseURL: BaseUrl.mutualfundBase,
-      url: `${schemeCode}`,
-      method: "get",
-    });
+    const result = await getMutualFundDetailsBySchemeCode(schemeCode);
 
-    const navData = result.data.data as Array<any>;
+    const navData = result.data as Array<any>;
 
     let navByDate = null;
     const targetDate = new Date(date);
@@ -118,7 +139,7 @@ export const getNavByDate = async (schemeCode: string, date: string) => {
       navByDate = navOnOrAfterDate[0];
     }
 
-    return navByDate.nav;
+    return { nav: navByDate.nav, date: navByDate.date };
   } catch (error) {
     console.error("Error fetching NAV by date:", error);
     useUiStore.getState().showToast({
@@ -126,6 +147,7 @@ export const getNavByDate = async (schemeCode: string, date: string) => {
       visible: true,
       variant: "failure",
     });
+    return null;
   } finally {
     useUiStore.getState().setShowLoader(false);
   }

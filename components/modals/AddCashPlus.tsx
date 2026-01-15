@@ -44,9 +44,15 @@ const AddCashPlus = (props: AddCashPlusProps) => {
   };
 
   const handleSubmitFund = async () => {
-    const nav = await getNavByDate(formData.schemeCode, formData.date);
+    const result = await getNavByDate(formData.schemeCode, formData.date);
     await addMutualFund({
-      data: [{ amount: formData.amount, date: formData.date, nav: nav }],
+      data: [
+        {
+          amount: formData.amount,
+          date: result?.date?.split("-").reverse().join("-") || "",
+          nav: result?.nav || "",
+        },
+      ],
       schemeCode: formData.schemeCode,
       schemeName: formData.mutualFundName,
     });
