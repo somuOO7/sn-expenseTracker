@@ -32,7 +32,15 @@ export const getFundChartData = async (
   );
 
   qtyBalance = 0;
-  return parsedNavData.reduce<Array<{ value: number }>>((acc, nav) => {
+  const chartData: Array<{
+    value: number;
+    label?: string;
+    showXAxisIndex?: boolean;
+  }> = [];
+
+  // Single-pass iteration to build chart data
+  for (let i = 0; i < parsedNavData.length; i++) {
+    const nav = parsedNavData[i];
     const matchingQty = dataMap.get(nav.parsedDate.getTime());
 
     if (matchingQty !== undefined) {
@@ -40,9 +48,42 @@ export const getFundChartData = async (
     }
 
     if (qtyBalance > 0) {
-      acc.push({ value: nav.nav * qtyBalance });
+      chartData.push({
+        value: nav.nav * qtyBalance,
+      });
+    }
+  }
+
+  // Calculate label positions
+  const noOfSeparations = Math.ceil(chartData.length / 3);
+  let navIndex = 0;
+
+  // Add labels in a second pass (only for labeled items)
+  for (let i = 0; i < chartData.length; i++) {
+    // Find corresponding nav entry
+    while (navIndex < parsedNavData.length) {
+      const nav = parsedNavData[navIndex];
+      const matchingQty = dataMap.get(nav.parsedDate.getTime());
+
+      if (matchingQty !== undefined) {
+        qtyBalance = matchingQty;
+      }
+
+      navIndex++;
+
+      if (qtyBalance > 0) {
+        break;
+      }
     }
 
-    return acc;
-  }, []);
+    if (i % noOfSeparations === 0 || i === chartData.length - 1) {
+      const date = parsedNavData[navIndex - 1].parsedDate;
+      chartData[i].label = `${date.getDate()} ${date.toLocaleString("default", {
+        month: "short",
+      })}'${date.getFullYear().toString().slice(2)}`;
+      chartData[i].showXAxisIndex = true;
+    }
+  }
+
+  return chartData;
 };
