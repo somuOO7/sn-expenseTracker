@@ -1,5 +1,5 @@
 export const formatShortDate = (dateStr: string): string => {
-  const [day, month, year] = dateStr.split("/");
+  const [year, month, day] = dateStr.split("-");
 
   const months = [
     "Jan",

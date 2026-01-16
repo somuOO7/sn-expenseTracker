@@ -1,4 +1,5 @@
 import { Label, SafeAreaContainer } from "@/components/ui";
+import { CommonStyles, Size } from "@/constants";
 import { useChartData, useMutualFund } from "@/hooks";
 import { useCashPlusStore } from "@/store";
 import { useFocusEffect } from "expo-router";
@@ -32,8 +33,11 @@ const reports = () => {
   );
 
   return (
-    <SafeAreaContainer style={{ flex: 1 }}>
-      <Label>reports</Label>
+    <SafeAreaContainer style={{ flex: 1, gap: Size.padding }}>
+      <Label variant="bold" style={CommonStyles.pageTitle}>
+        Reports
+      </Label>
+
       <View style={{ height: 400, width: "100%", overflow: "hidden" }}>
         <LineChart
           data={data}
